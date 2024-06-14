@@ -3,11 +3,15 @@ import { createPersonagem, loadPersonagemSprites } from './personagem';
 import { configControls, createControls } from './controls';
 import { loadBulletSprites } from './bullet';
 import { createInimigoAnimation, loadInimigoSprites, createInimigo } from './inimigo_slime';
+import { createBoneco, createBonecoAnimation, loadBonecoSprites } from './boneco-treinamento';
+import { createSkeleton, createSkeletonAnimations, loadSkeletonSprites } from './skeleton';
 
 export class GameScene extends Phaser.Scene{      
     water: any;
     personagem: any;
     constrols: any;
+    boneco: any;
+    skeleton: any;
 
     constructor() {
         super("GameScene");        
@@ -23,6 +27,8 @@ export class GameScene extends Phaser.Scene{
         loadPersonagemSprites(this); 
         loadBulletSprites(this);
         loadInimigoSprites(this);
+        loadBonecoSprites(this);
+        loadSkeletonSprites(this);
     }
 
     create() {
@@ -48,9 +54,17 @@ export class GameScene extends Phaser.Scene{
         // aplicar movimentação do personagem
         this.constrols = createControls(this);
 
-        // animação inimigo
+        // Animação e criação do inimigo
         createInimigoAnimation(this);
         createInimigo(this);
+
+        // Animação e criação do boneco
+        createBonecoAnimation(this);
+        this.boneco = createBoneco(this);
+
+         // Animação e criação do esqueleto
+        createSkeletonAnimations(this);
+        const skeleton = createSkeleton(this);
     }    
 
     override update() {
