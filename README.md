@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
 
 Phaser version: "^3.55.2"
-Documention `https://phaser.io/`
+Documention [Phaser](https://phaser.io)
 ## Development server
 
 In Terminal `npm install`
