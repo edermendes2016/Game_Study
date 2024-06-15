@@ -1,3 +1,4 @@
+
 export const loadBonecoSprites = (scene: Phaser.Scene): void => {
     
     scene.load.spritesheet("boneco", "assets/boneco-treinamento/boneco.png", {
@@ -29,9 +30,10 @@ export const createBonecoAnimation = (scene: Phaser.Scene): void => {
     });
 }
 
-export const createBoneco = (scene: Phaser.Scene) => {
+export const createBoneco = (scene: Phaser.Scene) => {    
     const boneco = scene.physics.add.sprite(200, 200, "boneco").setScale(1.2);
-    boneco.anims.play("boneco", true);    
+    boneco.anims.play("boneco", true);
+       
 
     return boneco;
 }

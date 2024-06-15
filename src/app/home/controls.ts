@@ -93,7 +93,7 @@ const attack = (personagem: Personagem, scene: Phaser.Scene): void => {
         bullet.destroy(); // Destruir o bullet
         
         // Aqui você pode adicionar lógica para lidar com o impacto no boneco
-        destruirBoneco(scene, boneco); // Chamar a função para destruir o boneco
+        hitBoneco(bullet, boneco, scene); // Chamar a função para destruir o boneco
     });
     // Assumindo que a animação tem um evento 'oncomplete' para resetar o estado de ataque
     personagem.on('animationcomplete', (animation:any) => {
@@ -114,3 +114,31 @@ const destruirBoneco = (scene: Phaser.Scene, boneco: Phaser.Physics.Arcade.Sprit
         console.log("boneco voltou")
     });
 }
+
+// Função para lidar com o impacto do bullet no boneco
+const hitBoneco = (bullet: Phaser.Physics.Arcade.Image, boneco: Phaser.Physics.Arcade.Sprite, scene: Phaser.Scene): void => {
+    // Reproduzir animação de destruição do boneco    
+    boneco.anims.play("boneco_destruido", true);
+    
+    // Desativar a física do boneco para evitar empurrá-lo para fora da tela
+    boneco.body.enable = false;
+
+    // Callback para reaparecer o boneco inicial após a animação de destruição
+    boneco.on('animationcomplete', (animation: any, frame: any) => {        
+        if (animation.key === "boneco_destruido") {
+            // Mostrar o boneco inicial novamente
+            boneco.setVisible(true);
+            // Ativar a física do boneco
+            boneco.body.enable = true;
+            // Reiniciar a animação do boneco inicial
+            boneco.anims.play("boneco", true);  
+
+            // Destruir o boneco após um atraso
+            scene.time.delayedCall(2000, () => {
+                console.log("boneco voltou")
+                boneco.destroy(); // Remover o boneco do jogo após 1 segundo
+            });
+        }        
+    });
+}
+
