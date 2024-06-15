@@ -60,7 +60,7 @@ export class GameScene extends Phaser.Scene{
 
         // Animação e criação do boneco
         createBonecoAnimation(this);
-        this.boneco = createBoneco(this);
+        createBoneco(this);
 
          // Animação e criação do esqueleto
         createSkeletonAnimations(this);

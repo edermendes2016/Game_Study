@@ -90,11 +90,14 @@ const attack = (personagem: Personagem, scene: Phaser.Scene): void => {
      // Collider entre o bullet e o boneco
      scene.physics.add.collider(bullet, boneco, () => {
         // Lógica a ser executada quando o bullet colidir com o boneco
-        bullet.destroy(); // Destruir o bullet
+        bullet.destroy();
+         // Destruir o bullet
         
         // Aqui você pode adicionar lógica para lidar com o impacto no boneco
-        hitBoneco(bullet, boneco, scene); // Chamar a função para destruir o boneco
+        hitBoneco(boneco, scene); // Chamar a função para animar a destruição do boneco       
+        
     });
+    
     // Assumindo que a animação tem um evento 'oncomplete' para resetar o estado de ataque
     personagem.on('animationcomplete', (animation:any) => {
         if (animation.key === "player_attack") {
@@ -103,42 +106,39 @@ const attack = (personagem: Personagem, scene: Phaser.Scene): void => {
     });
 }
 
-// Função para destruir o boneco
-const destruirBoneco = (scene: Phaser.Scene, boneco: Phaser.Physics.Arcade.Sprite): void => {
-    // Reproduzir a animação de destruição do boneco
-    boneco.anims.play('boneco_destruido', true);
-    console.log("boneco destruido")
-    // Definir um tempo para remover o boneco após a animação
-    scene.time.delayedCall(1000, () => {
-        boneco.destroy(); // Remover o boneco do jogo após 1 segundo
-        console.log("boneco voltou")
-    });
-}
+
 
 // Função para lidar com o impacto do bullet no boneco
-const hitBoneco = (bullet: Phaser.Physics.Arcade.Image, boneco: Phaser.Physics.Arcade.Sprite, scene: Phaser.Scene): void => {
-    // Reproduzir animação de destruição do boneco    
-    boneco.anims.play("boneco_destruido", true);
-    
-    // Desativar a física do boneco para evitar empurrá-lo para fora da tela
-    boneco.body.enable = false;
+export const hitBoneco = (boneco: Phaser.Physics.Arcade.Sprite, scene: Phaser.Scene): void => {
+    // Verifique se o boneco já foi atingido
+    if (!(boneco as any).foiAtingido) {
+        // Definir 'foiAtingido' como verdadeiro para indicar que o boneco foi atingido
+        (boneco as any).foiAtingido = true;
 
-    // Callback para reaparecer o boneco inicial após a animação de destruição
-    boneco.on('animationcomplete', (animation: any, frame: any) => {        
-        if (animation.key === "boneco_destruido") {
-            // Mostrar o boneco inicial novamente
-            boneco.setVisible(true);
-            // Ativar a física do boneco
-            boneco.body.enable = true;
-            // Reiniciar a animação do boneco inicial
-            boneco.anims.play("boneco", true);  
+        // Reproduzir animação de destruição do boneco    
+        boneco.anims.play("boneco_destruido", true);
+        
+        // Interromper a velocidade do boneco para evitar que ele seja empurrado para fora da tela
+        boneco.setVelocity(0);
 
-            // Destruir o boneco após um atraso
-            scene.time.delayedCall(2000, () => {
-                console.log("boneco voltou")
-                boneco.destroy(); // Remover o boneco do jogo após 1 segundo
-            });
-        }        
-    });
+        // Callback para remover o boneco após a animação de destruição
+        boneco.on('animationcomplete', (animation: any) => {
+            if (animation.key === "boneco_destruido") {
+                
+                boneco.setVisible(false); // Tornar o boneco invisível
+                boneco.body.enable = false; // Desativar a física do boneco
+                scene.time.delayedCall(1000, () => {
+                    boneco.setVisible(true); // Tornar o boneco visível novamente
+                    boneco.body.enable = true; // Reativar a física do boneco
+                    boneco.anims.play("boneco", false); // Reproduzir animação do boneco parado
+                    (boneco as any).foiAtingido = false; // Reiniciar a flag 'foiAtingido' para falso
+                    boneco.destroy(); // Destruir o boneco após a animação de destruição
+                });
+            }
+        });
+    }
 }
+
+
+
 

@@ -15,25 +15,25 @@ export const createBonecoAnimation = (scene: Phaser.Scene): void => {
             start: 0,
             end: 0
         }),
-        frameRate: 6                
+        frameRate: 6,
+        repeat: 0                      
     });
 
     // Criar a animação para o boneco sendo destruído
     scene.anims.create({
         key: 'boneco_destruido',
         frames: scene.anims.generateFrameNames('boneco', {
-            start: 1, // Suponha que a animação de destruição comece do segundo frame
-            end: 5 // Suponha que a animação de destruição termine no sexto frame
+            start: 1, 
+            end: 6 
         }),
-        frameRate: 15, // Ajuste conforme necessário
-        repeat: 0 // Não repetir a animação
+        frameRate: 5, 
+        repeat: 0 
     });
 }
 
 export const createBoneco = (scene: Phaser.Scene) => {    
-    const boneco = scene.physics.add.sprite(200, 200, "boneco").setScale(1.2);
-    boneco.anims.play("boneco", true);
-       
-
+    const boneco = scene.physics.add.sprite(500, 60, "boneco").setScale(1.0);
+    boneco.anims.play("boneco", true);       
+    (boneco as any).foiAtingido = false;
     return boneco;
 }
