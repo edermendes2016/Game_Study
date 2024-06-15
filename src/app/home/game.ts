@@ -5,13 +5,17 @@ import { loadBulletSprites } from './bullet';
 import { createInimigoAnimation, loadInimigoSprites, createInimigo } from './inimigo_slime';
 import { createBoneco, createBonecoAnimation, loadBonecoSprites } from './boneco-treinamento';
 import { createSkeleton, createSkeletonAnimations, loadSkeletonSprites } from './skeleton';
+import { createRogue, createRogueAnimations, loadRogueSprites } from './rogue';
+import { PlayerMovement } from './player-movement';
 
 export class GameScene extends Phaser.Scene{      
     water: any;
     personagem: any;
     controls: any;
+    controlsRogue: any;
     boneco: any;
     skeleton: any;
+    rogue!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
     constructor() {
         super("GameScene");        
@@ -29,6 +33,7 @@ export class GameScene extends Phaser.Scene{
         loadInimigoSprites(this);
         loadBonecoSprites(this);
         loadSkeletonSprites(this);
+        loadRogueSprites(this);
     }
 
     create() {
@@ -47,10 +52,7 @@ export class GameScene extends Phaser.Scene{
         this.personagem = createPersonagem(this); 
         
         this.physics.add.collider(this.personagem, this.water);
-
-        // aplicar animação de respiração
-        this.personagem.anims.play('player_idle', true);
-
+        
         // aplicar movimentação do personagem
         this.controls = createControls(this);
 
@@ -66,6 +68,12 @@ export class GameScene extends Phaser.Scene{
         createSkeletonAnimations(this);
         const skeleton = createSkeleton(this);
 
+        createRogueAnimations(this);
+        this.rogue = createRogue(this);               
+
+        this.controlsRogue = new PlayerMovement(this, this.rogue)
+        
+
         // Adicionar colisão entre personagem e boneco
         this.physics.add.collider(this.personagem, this.boneco, () => {
             console.log("Colisão entre personagem e boneco");
@@ -75,5 +83,6 @@ export class GameScene extends Phaser.Scene{
 
     override update() {
        configControls(this.personagem, this.controls, this);
+       this.controlsRogue.update();
     }
 }
