@@ -9,7 +9,7 @@ import { createSkeleton, createSkeletonAnimations, loadSkeletonSprites } from '.
 export class GameScene extends Phaser.Scene{      
     water: any;
     personagem: any;
-    constrols: any;
+    controls: any;
     boneco: any;
     skeleton: any;
 
@@ -52,7 +52,7 @@ export class GameScene extends Phaser.Scene{
         this.personagem.anims.play('player_idle', true);
 
         // aplicar movimentação do personagem
-        this.constrols = createControls(this);
+        this.controls = createControls(this);
 
         // Animação e criação do inimigo
         createInimigoAnimation(this);
@@ -68,6 +68,6 @@ export class GameScene extends Phaser.Scene{
     }    
 
     override update() {
-       configControls(this.personagem, this.constrols, this);
+       configControls(this.personagem, this.controls, this);
     }
 }
