@@ -35,5 +35,14 @@ export const createBoneco = (scene: Phaser.Scene) => {
     const boneco = scene.physics.add.sprite(500, 60, "boneco").setScale(1.0);
     boneco.anims.play("boneco", true);       
     (boneco as any).foiAtingido = false;
+    boneco.setImmovable(true);
+
+     // Definir tamanho do hitbox menor
+     boneco.body.setSize(25, 50); // Largura, Altura
+     boneco.body.setOffset(25, 12); // Ajuste os valores conforme necessário
+
+     // Ativar depuração para este sprite
+    (boneco.body as Phaser.Physics.Arcade.Body).debugBodyColor = 0xff00ff;
+
     return boneco;
 }

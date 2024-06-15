@@ -7,6 +7,11 @@ export interface Personagem extends Phaser.Physics.Arcade.Sprite {
 export const createPersonagem = (scene: Phaser.Scene) => {
     const personagem = scene.physics.add.sprite(300,200, "player_idle");
     createAnimations(scene, personagem);
+
+    // Definir tamanho do hitbox menor
+    //personagem.body.setSize(40, 63); // Largura, Altura
+   // personagem.body.setOffset(0, 0); // Ajuste os valores conforme necessário
+
     return personagem;
 }
 

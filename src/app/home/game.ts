@@ -60,11 +60,17 @@ export class GameScene extends Phaser.Scene{
 
         // Animação e criação do boneco
         createBonecoAnimation(this);
-        createBoneco(this);
+        this.boneco = createBoneco(this);
 
          // Animação e criação do esqueleto
         createSkeletonAnimations(this);
         const skeleton = createSkeleton(this);
+
+        // Adicionar colisão entre personagem e boneco
+        this.physics.add.collider(this.personagem, this.boneco, () => {
+            console.log("Colisão entre personagem e boneco");
+        });
+        
     }    
 
     override update() {

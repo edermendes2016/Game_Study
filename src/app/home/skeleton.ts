@@ -76,14 +76,14 @@ export const createSkeleton = (scene: Phaser.Scene): Phaser.GameObjects.Containe
     const skeletonMain = scene.physics.add.sprite(0, 370, "skeleton").setScale(1);    
     const skeletonBow = scene.add.sprite(0, 370, "skeleton_bow").setScale(1);
     const skeletonWeapon = scene.add.sprite(0, 370, "skeleton_weapon").setScale(1);
-    const skeletonArrow = scene.add.sprite(0, 370, "skeleton_arrow").setScale(1.15);
-   
+    const skeletonArrow = scene.add.sprite(0, 370, "skeleton_arrow").setScale(1.15);   
+
 
     skeletonWeapon.anims.play("skeleton_weapon", true);
     skeletonMain.anims.play("skeleton", true);
     skeletonBow.anims.play("skeleton_bow", true);
-    skeletonArrow.anims.play("skeleton_arrow", true);
-    
+    skeletonArrow.anims.play("skeleton_arrow", true); 
+
     
 
     const skeletonContainer = scene.add.container(160, 200, [skeletonWeapon, skeletonMain, skeletonBow, skeletonArrow ]);
@@ -91,7 +91,7 @@ export const createSkeleton = (scene: Phaser.Scene): Phaser.GameObjects.Containe
 
     // Ajustar o corpo de física para englobar o container
     const body = (skeletonContainer.body as Phaser.Physics.Arcade.Body);
-    body.setSize(64, 64); // Ajustar ao tamanho total das sprites combinadas  
+    body.setSize(64, 64); // Ajustar ao tamanho total das sprites combinadas      
 
     return skeletonContainer;
 };
