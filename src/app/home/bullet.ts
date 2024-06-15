@@ -14,4 +14,6 @@ export const createBullet = (personagem: any, scene: any) => {
     } else {
         bullet.setVelocityX(700)
     }
+
+    return bullet;
 }

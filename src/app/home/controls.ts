@@ -1,5 +1,7 @@
 import { Personagem } from "./personagem";
 import { createBullet } from "./bullet";
+import { createBoneco } from "./boneco-treinamento";
+import { createInimigo } from "./inimigo_slime";
 
 export const createControls = (scene: Phaser.Scene): Phaser.Types.Input.Keyboard.CursorKeys => {
     return scene.input.keyboard.createCursorKeys();
@@ -80,12 +82,35 @@ const attack = (personagem: Personagem, scene: Phaser.Scene): void => {
     personagem.isAttacking = true;
     personagem.anims.play("player_attack", true);
     
-    createBullet(personagem, scene);
+    const bullet = createBullet(personagem, scene);
 
+    // Assumindo que o boneco já foi criado e é acessível
+    const boneco = createBoneco(scene); // Criar o boneco    
+    
+     // Collider entre o bullet e o boneco
+     scene.physics.add.collider(bullet, boneco, () => {
+        // Lógica a ser executada quando o bullet colidir com o boneco
+        bullet.destroy(); // Destruir o bullet
+        
+        // Aqui você pode adicionar lógica para lidar com o impacto no boneco
+        destruirBoneco(scene, boneco); // Chamar a função para destruir o boneco
+    });
     // Assumindo que a animação tem um evento 'oncomplete' para resetar o estado de ataque
     personagem.on('animationcomplete', (animation:any) => {
         if (animation.key === "player_attack") {
             personagem.isAttacking = false;
         }
+    });
+}
+
+// Função para destruir o boneco
+const destruirBoneco = (scene: Phaser.Scene, boneco: Phaser.Physics.Arcade.Sprite): void => {
+    // Reproduzir a animação de destruição do boneco
+    boneco.anims.play('boneco_destruido', true);
+    console.log("boneco destruido")
+    // Definir um tempo para remover o boneco após a animação
+    scene.time.delayedCall(1000, () => {
+        boneco.destroy(); // Remover o boneco do jogo após 1 segundo
+        console.log("boneco voltou")
     });
 }

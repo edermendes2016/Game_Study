@@ -5,7 +5,7 @@ export interface Personagem extends Phaser.Physics.Arcade.Sprite {
 
 
 export const createPersonagem = (scene: Phaser.Scene) => {
-    const personagem = scene.physics.add.sprite(200,200, "player_idle");
+    const personagem = scene.physics.add.sprite(300,200, "player_idle");
     createAnimations(scene, personagem);
     return personagem;
 }

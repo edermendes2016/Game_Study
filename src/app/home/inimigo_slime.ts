@@ -33,4 +33,6 @@ export const createInimigo = (scene: Phaser.Scene) => {
         onYoyo: () => { inimigo.flipX = !inimigo.flipX; }, // Inverte flipX ao voltar
         onRepeat: () => { inimigo.flipX = !inimigo.flipX; } // Inverte flipX ao repetir
     });
+
+    return inimigo;
 }
