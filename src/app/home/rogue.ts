@@ -1,5 +1,5 @@
 export const createRogue = (scene: Phaser.Scene) => {
-    const rogue = scene.physics.add.sprite(400,200, "rogue_idle");
+    const rogue = scene.physics.add.sprite(400,200, "rogue_idle").setScale(2);
     rogue.anims.play('rogue_idle');   
      
     return rogue;
@@ -9,14 +9,14 @@ export const createRogue = (scene: Phaser.Scene) => {
 export const loadRogueSprites = (scene: Phaser.Scene) : void => { 
     scene.load.spritesheet("rogue_idle", "assets/Rogue/Idle/Idle-Sheet.png", {
         frameWidth: 33,
-        frameHeight: 32,        
+        frameHeight: 32,     
         spacing: 1   
     });
 
     scene.load.spritesheet("rogue_run", "assets/Rogue/Run/Run.png", {
-        frameWidth: 33,
-        frameHeight: 36,
-        spacing: 32        
+        frameWidth: 62,
+        frameHeight: 34,
+        margin: 14   
     });
 
 }
