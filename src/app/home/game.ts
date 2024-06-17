@@ -7,6 +7,7 @@ import { createBoneco, createBonecoAnimation, loadBonecoSprites } from './boneco
 import { createSkeleton, createSkeletonAnimations, loadSkeletonSprites } from './skeleton';
 import { createRogue, createRogueAnimations, loadRogueSprites } from './rogue';
 import { PlayerMovement } from './player-movement';
+import { createBau, createBauAnimations, loadBauSprites } from './bau';
 
 export class GameScene extends Phaser.Scene{      
     water: any;
@@ -15,6 +16,7 @@ export class GameScene extends Phaser.Scene{
     controlsRogue: any;
     boneco: any;
     skeleton: any;
+    bau: any;
     rogue!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
     constructor() {
@@ -34,6 +36,7 @@ export class GameScene extends Phaser.Scene{
         loadBonecoSprites(this);
         loadSkeletonSprites(this);
         loadRogueSprites(this);
+        loadBauSprites(this);
     }
 
     create() {
@@ -72,12 +75,18 @@ export class GameScene extends Phaser.Scene{
         this.rogue = createRogue(this);               
 
         this.controlsRogue = new PlayerMovement(this, this.rogue)
+
+        // Criar baú
+        createBauAnimations(this);
+        this.bau = createBau(this);       
+
         
 
         // Adicionar colisão entre personagem e boneco
         this.physics.add.collider(this.personagem, this.boneco, () => {
             console.log("Colisão entre personagem e boneco");
         });
+
         
     }    
 

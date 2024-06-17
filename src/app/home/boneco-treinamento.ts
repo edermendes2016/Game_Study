@@ -44,5 +44,7 @@ export const createBoneco = (scene: Phaser.Scene) => {
      // Ativar depuração para este sprite
     (boneco.body as Phaser.Physics.Arcade.Body).debugBodyColor = 0xff00ff;
 
+    
+
     return boneco;
 }
