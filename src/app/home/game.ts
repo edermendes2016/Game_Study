@@ -47,6 +47,12 @@ export class GameScene extends Phaser.Scene{
 
         const ground = map.createLayer("grass", tileSetGrass, 0 , 0);
 
+        const quitButton = this.add.text(730, 60, 'Quit', { fontSize: '32px' })
+        .setInteractive()
+        .on('pointerdown', () => this.scene.start('MenuScene'));
+
+        quitButton.setOrigin(0.5);
+
         // // colisão com a água
         this.water = map.createLayer("water", tileSetWater, 0 , 0);
         this.water.setCollisionByProperty({ collider: true })

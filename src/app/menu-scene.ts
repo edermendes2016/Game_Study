@@ -1,29 +1,33 @@
-// import Phaser = require("phaser");
+import Phaser = require("phaser");
 
-// export class MenuScene extends Phaser.Scene {
-//   constructor() {
-//     super({ key: 'MenuScene' });
-//   }
+export class MenuScene extends Phaser.Scene {
+  constructor() {
+    super({ key: 'MenuScene' });
+  }
 
-//   preload() {
-//     // Carregar recursos necessários para o menu, se houver
-//   }
+  preload() {
+    // Carregar recursos necessários para o menu, se houver
+  }
 
-//   create() {
-//     const playButton = this.add.text(400, 100, 'Play', { fontSize: '132px' })
-//       .setInteractive()
-//       .on('pointerdown', () => this.scene.start('IsometricScene'));
+  create() {
+    const playButton = this.add.text(400, 100, 'Play', { fontSize: '132px' })
+      .setInteractive()
+      .on('pointerdown', () => this.scene.start('GameScene'));
 
-//     const menuButton = this.add.text(400, 250, 'Menu', { fontSize: '132px' })
-//       .setInteractive()
-//       .on('pointerdown', () => console.log('Menu button clicked'));
+    const demoButton = this.add.text(400, 250, 'Demo', { fontSize: '132px' })
+      .setInteractive()
+      .on('pointerdown', () => this.scene.start('DemoScene'));
 
-//     const quitButton = this.add.text(400, 400, 'Quit', { fontSize: '132px' })
-//       .setInteractive()
-//       .on('pointerdown', () => console.log('Quit button clicked'));
+    // const menuButton = this.add.text(400, 250, 'Menu', { fontSize: '132px' })
+    //   .setInteractive()
+    //   .on('pointerdown', () => console.log('Menu button clicked'));
 
-//     playButton.setOrigin(0.5);
-//     menuButton.setOrigin(0.5);
-//     quitButton.setOrigin(0.5);
-//   }
-// }
+    const quitButton = this.add.text(400, 400, 'Quit', { fontSize: '132px' })
+      .setInteractive()
+      .on('pointerdown', () => console.log('Quit button clicked'));
+
+    playButton.setOrigin(0.5);
+    demoButton.setOrigin(0.5);
+    quitButton.setOrigin(0.5);
+  }
+}
