@@ -49,8 +49,8 @@ export const createBauAnimations = (scene: Phaser.Scene) => {
     scene.anims.create({
         key: 'bau_closed',
         frames: [
-            { key: 'bau', frame: 1 }, // Frame fechado
-            { key: 'bau', frame: 0 }  // Frame aberto
+           // { key: 'bau', frame: 0 }, // Frame fechado
+            { key: 'bau', frame: 1 }  // Frame fechado
         ],
         frameRate: 2, // Velocidade da animaçã
         
@@ -60,8 +60,8 @@ export const createBauAnimations = (scene: Phaser.Scene) => {
     scene.anims.create({
         key: 'bau_open',
         frames: [
-            { key: 'bau', frame: 0 }, // Frame fechado
-            { key: 'bau', frame: 1 }  // Frame aberto
+            { key: 'bau', frame: 1 }, // Frame fechado
+            { key: 'bau', frame: 0 }  // Frame aberto
         ],
         frameRate: 2, // Velocidade da animação        
     });
