@@ -9,7 +9,7 @@ import { createRogue, createRogueAnimations, loadRogueSprites } from './rogue';
 import { PlayerMovement } from './player-movement';
 import { createBau, createBauAnimations, loadBauSprites } from './bau';
 
-export class GameScene extends Phaser.Scene{      
+export class GameScene extends Phaser.Scene {
     water: any;
     personagem: any;
     controls: any;
@@ -18,19 +18,20 @@ export class GameScene extends Phaser.Scene{
     skeleton: any;
     bau: any;
     rogue!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    FOVGraphics!: Phaser.GameObjects.Graphics;
 
     constructor() {
-        super("GameScene");        
+        super("GameScene");
     }
 
-    preload() {        
+    preload() {
         // carregar o preload antes de começar o jogo        
-         this.load.image('tiles', 'assets/map/grass.png');
-         this.load.image('border', 'assets/map/water.png');
-         this.load.tilemapTiledJSON('map', 'assets/map/map.json');
-        
+        this.load.image('tiles', 'assets/map/grass.png');
+        this.load.image('border', 'assets/map/water.png');
+        this.load.tilemapTiledJSON('map', 'assets/map/map.json');
+
         // // sprites do personagem
-        loadPersonagemSprites(this); 
+        loadPersonagemSprites(this);
         loadBulletSprites(this);
         loadInimigoSprites(this);
         loadBonecoSprites(this);
@@ -41,27 +42,27 @@ export class GameScene extends Phaser.Scene{
 
     create() {
         // Mapa
-        const map = this.make.tilemap({key: "map"});
+        const map = this.make.tilemap({ key: "map" });
         const tileSetGrass = map.addTilesetImage("grass", "tiles");
         const tileSetWater = map.addTilesetImage("water", "border");
 
-        const ground = map.createLayer("grass", tileSetGrass, 0 , 0);
+        const ground = map.createLayer("grass", tileSetGrass, 0, 0);
 
         const quitButton = this.add.text(730, 60, 'Quit', { fontSize: '32px' })
-        .setInteractive()
-        .on('pointerdown', () => this.scene.start('MenuScene'));
+            .setInteractive()
+            .on('pointerdown', () => this.scene.start('MenuScene'));
 
         quitButton.setOrigin(0.5);
 
         // // colisão com a água
-        this.water = map.createLayer("water", tileSetWater, 0 , 0);
+        this.water = map.createLayer("water", tileSetWater, 0, 0);
         this.water.setCollisionByProperty({ collider: true })
 
-        
-        this.personagem = createPersonagem(this); 
-        
+
+        this.personagem = createPersonagem(this);
+
         this.physics.add.collider(this.personagem, this.water);
-        
+
         // aplicar movimentação do personagem
         this.controls = createControls(this);
 
@@ -73,31 +74,57 @@ export class GameScene extends Phaser.Scene{
         createBonecoAnimation(this);
         this.boneco = createBoneco(this);
 
-         // Animação e criação do esqueleto
+        // Animação e criação do esqueleto
         createSkeletonAnimations(this);
         const skeleton = createSkeleton(this);
 
         createRogueAnimations(this);
-        this.rogue = createRogue(this);               
+        this.rogue = createRogue(this);
 
-        this.controlsRogue = new PlayerMovement(this, this.rogue)
+        this.controlsRogue = new PlayerMovement(this, this.rogue);
 
         // Criar baú
         createBauAnimations(this);
-        this.bau = createBau(this);       
-
-        
+        this.bau = createBau(this);
 
         // Adicionar colisão entre personagem e boneco
         this.physics.add.collider(this.personagem, this.boneco, () => {
             console.log("Colisão entre personagem e boneco");
         });
 
-        
-    }    
+        // Configurar o campo de visão
+        this.FOVGraphics = this.add.graphics();
+        this.updateFOV(this.personagem.x, this.personagem.y);
+
+        this.updateFOV(this.rogue.x, this.rogue.y);
+
+        // Configurar a câmera para seguir o personagem
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(this.personagem, true, 0.05, 0.05);
+
+        // Ajustar o zoom da câmera para o tamanho da FOV
+        const fovSize = 400; // Tamanho do campo de visão em pixels
+        const zoomFactor = this.cameras.main.height / fovSize;
+        this.cameras.main.setZoom(zoomFactor);
+    }
 
     override update() {
-       configControls(this.personagem, this.controls, this);
-       this.controlsRogue.update();
+        configControls(this.personagem, this.controls, this);
+        this.controlsRogue.update();
+
+         // Atualizar o campo de visão
+        this.updateFOV(this.personagem.x, this.personagem.y);
+        this.updateFOV(this.rogue.x, this.rogue.y);
+    }
+
+    // Função para atualizar o campo de visão
+    updateFOV(x: number, y: number) {
+        // Limpar o gráfico do campo de visão
+        this.FOVGraphics.clear();
+
+        // Desenhar o campo de visão em torno do personagem
+        this.FOVGraphics.fillStyle(0x000000, 0.5); // Cor e transparência
+        this.FOVGraphics.slice(x, y, 100, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(360), true);
+        this.FOVGraphics.fillPath();
     }
 }

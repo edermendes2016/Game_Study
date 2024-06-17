@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor() { 
     this.config = {      
-      type: Phaser.AUTO,      
+      type: Phaser.AUTO,
       width: 800,
       height: 640,
       parent: 'gameHomeContainer',
@@ -25,7 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         autoCenter: Phaser.Scale.CENTER_BOTH
       },
       physics: { default: "arcade", arcade: { debug: false, gravity: { y: 0 } } },
-      scene: [MenuScene, GameScene, DemoScene]
+      scene: [MenuScene, GameScene, DemoScene],
+      pixelArt: true
     }
   }
   ngOnDestroy() {

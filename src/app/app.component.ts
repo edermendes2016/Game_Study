@@ -15,15 +15,7 @@ export class AppComponent implements AfterViewInit {
   title = 'game';
 
   ngAfterViewInit(): void {
-    // let gameConfig: Phaser.Types.Core.GameConfig = {
-    //   type: Phaser.AUTO,
-    //   width: 800,
-    //   height: 600,
-    //   parent: 'gameContainer',
-    //   scene: [MenuScene, IsometricScene] // Adicionando ambas as cenas
-    // };
-
-    // let phaserGame = new Phaser.Game(gameConfig);
+    
   }
 
 }
