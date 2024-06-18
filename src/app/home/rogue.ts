@@ -1,7 +1,8 @@
 export const createRogue = (scene: Phaser.Scene) => {
     const rogue = scene.physics.add.sprite(400,200, "rogue_idle").setScale(1);
     rogue.anims.play('rogue_idle');   
-     
+    
+    
     return rogue;
 }
 

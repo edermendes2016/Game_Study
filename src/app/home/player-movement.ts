@@ -1,48 +1,92 @@
 import * as Phaser from 'phaser';
 
 interface Keys {
-    w: Phaser.Input.Keyboard.Key;
-    a: Phaser.Input.Keyboard.Key;
-    s: Phaser.Input.Keyboard.Key;
-    d: Phaser.Input.Keyboard.Key;
+    up: Phaser.Input.Keyboard.Key;
+    left: Phaser.Input.Keyboard.Key;
+    down: Phaser.Input.Keyboard.Key;
+    right: Phaser.Input.Keyboard.Key;
+}
+
+interface PlayerMovementConfig {
+    keys: {
+        up: number;
+        left: number;
+        down: number;
+        right: number;
+    };
+    animations: {
+        run: string;
+        idle: string;
+    };
+    velocities: {
+        x: number;
+        y: number;
+    };
 }
 
 export class PlayerMovement {
     private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     private keys: Keys;
+    private animations: {
+        run: string;
+        idle: string;
+    };
+    private velocities: {
+        x: number;
+        y: number;
+    };
 
-    constructor(scene: Phaser.Scene, player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody) {
+    private isColliding: boolean;
+
+    constructor(scene: Phaser.Scene, player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, config: PlayerMovementConfig) {
         this.player = player;
         this.keys = scene.input.keyboard.addKeys({
-            w: Phaser.Input.Keyboard.KeyCodes.W,
-            a: Phaser.Input.Keyboard.KeyCodes.A,
-            s: Phaser.Input.Keyboard.KeyCodes.S,
-            d: Phaser.Input.Keyboard.KeyCodes.D
+            up: config.keys.up,
+            left: config.keys.left,
+            down: config.keys.down,
+            right: config.keys.right
         }) as Keys;
+        this.animations = config.animations;
+        this.velocities = config.velocities;
+        this.isColliding = false;
     }
 
     update() {
+        if (this.isColliding) {
+            this.player.setVelocity(0);
+            return;
+        }
+
         this.player.setVelocity(0);
 
-        if (this.keys.a.isDown) {
-            this.player.setVelocityX(-160);
-            this.player.setFlipX(true); 
-            this.player.anims.play('rogue_run', true);
-        } else if (this.keys.d.isDown) {
-            this.player.setVelocityX(160);
-            this.player.setFlipX(false); 
-            this.player.anims.play('rogue_run', true);
-        } else if (this.keys.w.isDown) {
-            this.player.setVelocityY(-260);
-            this.player.anims.play('rogue_run', true); // Usa animação de esquerda para cima
-        } else if (this.keys.s.isDown) {
-            this.player.setVelocityY(160);
-            this.player.anims.play('rogue_run', true); // Usa animação de direita para baixo
+        if (this.keys.left.isDown) {
+            this.player.setVelocityX(-this.velocities.x);
+            this.player.setFlipX(true);
+            this.player.anims.play(this.animations.run, true);
+        } else if (this.keys.right.isDown) {
+            this.player.setVelocityX(this.velocities.x);
+            this.player.setFlipX(false);
+            this.player.anims.play(this.animations.run, true);
+        } else if (this.keys.up.isDown) {
+            this.player.setVelocityY(-this.velocities.y);
+            this.player.anims.play(this.animations.run, true); // Usa animação de corrida para cima
+        } else if (this.keys.down.isDown) {
+            this.player.setVelocityY(this.velocities.y);
+            this.player.anims.play(this.animations.run, true); // Usa animação de corrida para baixo
         } else {
             this.player.setVelocity(0);
-            if (this.player.anims.currentAnim?.key !== 'rogue_idle') {
-                this.player.anims.play('rogue_idle', true);
+            if (this.player.anims.currentAnim?.key !== this.animations.idle) {
+                this.player.anims.play(this.animations.idle, true);
             }
         }
+    }
+
+    stopAnimations() {
+        this.player.anims.stop();
+        this.player.setVelocity(0, 0);
+    }
+
+    setColliding(colliding: boolean) {
+        this.isColliding = colliding;
     }
 }

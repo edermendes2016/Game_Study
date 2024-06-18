@@ -81,7 +81,24 @@ export class GameScene extends Phaser.Scene {
         createRogueAnimations(this);
         this.rogue = createRogue(this);
 
-        this.controlsRogue = new PlayerMovement(this, this.rogue);
+        const config = {
+            keys: {
+                up: Phaser.Input.Keyboard.KeyCodes.W,
+                left: Phaser.Input.Keyboard.KeyCodes.A,
+                down: Phaser.Input.Keyboard.KeyCodes.S,
+                right: Phaser.Input.Keyboard.KeyCodes.D
+            },
+            animations: {
+                run: 'rogue_run',
+                idle: 'rogue_idle'
+            },
+            velocities: {
+                x: 160,
+                y: 260
+            }
+        };
+
+        this.controlsRogue = new PlayerMovement(this, this.rogue, config);
 
         // Criar baú
         createBauAnimations(this);
@@ -99,10 +116,11 @@ export class GameScene extends Phaser.Scene {
         this.updateFOV(this.rogue.x, this.rogue.y);
 
         // Configurar a câmera para seguir o personagem
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.personagem, true, 0.05, 0.05);
+        this.physics.world.setBounds(0,0,map.widthInPixels,map.heightInPixels);
+        this.cameras.main.setBounds(0,0,map.widthInPixels,map.heightInPixels);
+        this.cameras.main.startFollow(this.rogue);
 
-        // Ajustar o zoom da câmera para o tamanho da FOV
+        //Ajustar o zoom da câmera para o tamanho da FOV
         const fovSize = 400; // Tamanho do campo de visão em pixels
         const zoomFactor = this.cameras.main.height / fovSize;
         this.cameras.main.setZoom(zoomFactor);
@@ -116,6 +134,9 @@ export class GameScene extends Phaser.Scene {
         this.updateFOV(this.personagem.x, this.personagem.y);
         this.updateFOV(this.rogue.x, this.rogue.y);
     }
+
+    
+
 
     // Função para atualizar o campo de visão
     updateFOV(x: number, y: number) {
