@@ -1,6 +1,7 @@
 import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import * as Phaser from 'phaser';
 import { createRobot, loadRobotSprites } from './robo';
+import { createAlianca, loadAliancaSprites } from './personagemWar';
 
 
 export class DemoScene extends Phaser.Scene{
@@ -9,6 +10,7 @@ export class DemoScene extends Phaser.Scene{
     water!: Phaser.Tilemaps.TilemapLayer;
     robot: any;
     robotDeath!: Phaser.GameObjects.Sprite;
+    alianca!: any;
    
 
     constructor() {
@@ -19,14 +21,9 @@ export class DemoScene extends Phaser.Scene{
         this.load.image('tiles', 'assets/map/grass.png');
         this.load.image('border', 'assets/map/water.png');
         this.load.tilemapTiledJSON('map', 'assets/map/map.json');
-
-        this.load.spritesheet("newBoneco", "assets/boneco-treinamento/boneco_idle.png", {
-            frameWidth: 164,
-            frameHeight: 364,
-            spacing: 0
-        });
-
-        loadRobotSprites(this);    
+        
+        loadRobotSprites(this);  
+        loadAliancaSprites(this);
        
     }
 
@@ -59,29 +56,21 @@ export class DemoScene extends Phaser.Scene{
         //Create robot
         this.robot = createRobot(this);
 
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers("newBoneco", {frames: [0,1,2,3]}),
-            frameRate: 2,
-            repeat: -1
-        })
+        this.alianca = createAlianca(this);
 
-        this.player = this.add.sprite(750,55,"newBoneco").setScale(0.14);
-        this.player.setFlipX(true);
-        this.player.play("idle", true);
-        
+       //  this.alianca.play("alianca_down", true);
+       // this.alianca.play("alianca_left", true);
+       // this.alianca.play("alianca_right", true);
+        this.alianca.play("alianca_up", true);        
+                
 
         //player Control
-        this.physics.add.existing(this.player, false);
-        this.player.body.setCollideWorldBounds(true);
-        this.player.body.setAllowGravity(false);
+        this.physics.add.existing(this.alianca, false);
+        this.alianca.body.setCollideWorldBounds(true);
+        this.alianca.body.setAllowGravity(false);
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        
-        // Definir tamanho do hitbox menor
-        this.player.body.setSize(35, 280); // Largura, Altura
-        this.player.body.setOffset(0, 40); // Ajuste os valores conforme necessário
-
+       
         // configure camera primeiro width / height
 
         this.physics.world.setBounds(0,0,map.widthInPixels,map.heightInPixels);
@@ -89,13 +78,11 @@ export class DemoScene extends Phaser.Scene{
         
 
         // Ajustar o zoom da câmera para o tamanho da FOV
-        const fovSize = 200; // Tamanho do campo de visão em pixels
-        const zoomFactor = this.cameras.main.height / fovSize;
-        this.cameras.main.setZoom(zoomFactor);
+     //   const fovSize = 200; // Tamanho do campo de visão em pixels
+    //    const zoomFactor = this.cameras.main.height / fovSize;
+     //   this.cameras.main.setZoom(zoomFactor);
 
-        this.physics.add.collider(this.player, this.water);
-        this.physics.add.collider(this.robot, this.water);
-        
+                
         
         // Adicionar colisão entre robô e jogador
         this.physics.add.collider(this.robot, this.player, () => {
@@ -137,22 +124,7 @@ export class DemoScene extends Phaser.Scene{
         bar.scaleX = percentage/100;
     }
 
-    override update() {
-       this.player.body.velocity.x = 0;
-       this.player.body.velocity.y = 0;
-
-       if(this.cursors.up.isDown){
-        this.player.body.velocity.y -= 450;
-       } else if (this.cursors.down.isDown){
-        this.player.body.velocity.y += 450;
-       }
-
-       if(this.cursors.left.isDown){
-        this.player.body.velocity.x -= 450;
-       } else if (this.cursors.right.isDown){
-        this.player.body.velocity.x += 450;
-       }
-
+    override update() {  
        const playerMovement = this.data.get('playerMovement');
         if (playerMovement) {
             playerMovement.update();

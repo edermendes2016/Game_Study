@@ -25,7 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         autoCenter: Phaser.Scale.CENTER_BOTH
       },
       physics: { default: "arcade", arcade: { debug: false, gravity: { y: 0 } } },
-      scene: [MenuScene, GameScene, DemoScene],
+      // scene: [MenuScene, GameScene, DemoScene],
+      scene: [DemoScene],
       pixelArt: true
     }
   }
