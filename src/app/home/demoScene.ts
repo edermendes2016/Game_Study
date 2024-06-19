@@ -1,7 +1,9 @@
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import * as Phaser from 'phaser';
 import { createRobot, loadRobotSprites } from './robo';
-import { createAlianca, loadAliancaSprites } from './personagemWar';
+import  durotarJson from 'src/assets/map_att/durotar.json';
+import { HeroAlianca, loadHeroSprites } from '../entities/personagemWar';
+import { LAYERS, SIZES, SPRITES, TILES } from '../utils/constants';
+//Forma de importar as imagens direto do json
 
 
 export class DemoScene extends Phaser.Scene{
@@ -11,6 +13,7 @@ export class DemoScene extends Phaser.Scene{
     robot: any;
     robotDeath!: Phaser.GameObjects.Sprite;
     alianca!: any;
+    heroAlianca?: HeroAlianca;
    
 
     constructor() {
@@ -18,37 +21,32 @@ export class DemoScene extends Phaser.Scene{
     }
 
     preload() {       
-        this.load.image('tiles', 'assets/map/grass.png');
-        this.load.image('border', 'assets/map/water.png');
-        this.load.tilemapTiledJSON('map', 'assets/map/map.json');
         
-        loadRobotSprites(this);  
-        loadAliancaSprites(this);
+        this.load.image(TILES.DUROTAR, 'assets/map_att/durotar.png');
+        this.load.tilemapTiledJSON('map', 'assets/map_att/durotar.json');
+        
+        loadRobotSprites(this);
+        
+        loadHeroSprites(this);
+        
        
     }
 
     create() {              
         
         // Mapa     
-        const map = this.make.tilemap({ key: "map" });
-        const tileSetGrass = map.addTilesetImage("grass", "tiles");
-        const tileSetWater = map.addTilesetImage("water", "border");
+        const map = this.make.tilemap({key: "map"});
+        const tileset = map.addTilesetImage(durotarJson.tilesets[0].name, TILES.DUROTAR, SIZES.TILE, SIZES.TILE);
 
-        const ground = map.createLayer("grass", tileSetGrass, 0, 0);
-
-         // // colisão com a água
-         this.water = map.createLayer("water", tileSetWater, 0, 0);
-         this.water.setCollisionByProperty({ collider: true })
-
+        const groundLayer = map.createLayer(LAYERS.GROUND, tileset, 0, 0);
+        const wallLayer = map.createLayer(LAYERS.WALLS, tileset, 0, 0);
 
          //make 3 bars
         let healthBar = this.makeBar(100,10,0x2ecc71);
         this.setValue(healthBar,100);
 
-
         let powerBar = this.makeBar(100,20,0xe74c3c);
         this.setValue(powerBar,50);
-
 
         let magicBar = this.makeBar(100,30,0x2980b9);
         this.setValue(magicBar,33);
@@ -56,21 +54,9 @@ export class DemoScene extends Phaser.Scene{
         //Create robot
         this.robot = createRobot(this);
 
-        this.alianca = createAlianca(this);
+        this.heroAlianca = new HeroAlianca(this, 400, 250, SPRITES.HEROALIANCA)
 
-       //  this.alianca.play("alianca_down", true);
-       // this.alianca.play("alianca_left", true);
-       // this.alianca.play("alianca_right", true);
-        this.alianca.play("alianca_up", true);        
-                
-
-        //player Control
-        this.physics.add.existing(this.alianca, false);
-        this.alianca.body.setCollideWorldBounds(true);
-        this.alianca.body.setAllowGravity(false);
-        this.cursors = this.input.keyboard.createCursorKeys();
-
-       
+               
         // configure camera primeiro width / height
 
         this.physics.world.setBounds(0,0,map.widthInPixels,map.heightInPixels);
@@ -98,7 +84,8 @@ export class DemoScene extends Phaser.Scene{
             this.robot.setVelocity(0, 0);
         });
 
-        this.cameras.main.startFollow(this.robot);
+        this.cameras.main.startFollow(this.heroAlianca);
+        this.cameras.main.setBounds(0,0,map.widthInPixels,map.heightInPixels);
               
     }    
    
@@ -124,10 +111,12 @@ export class DemoScene extends Phaser.Scene{
         bar.scaleX = percentage/100;
     }
 
-    override update() {  
+    override update(delta: number) {  
        const playerMovement = this.data.get('playerMovement');
         if (playerMovement) {
             playerMovement.update();
         }
+
+        this.heroAlianca?.update(delta);
     }
 }
