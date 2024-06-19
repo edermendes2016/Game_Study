@@ -3,6 +3,7 @@ import { Entity } from "./entity";
 
 export class HeroAlianca extends Entity {
     textureKey: string;
+    moveSpeed: number;
     
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
         super(scene, x, y, texture, SPRITES.HEROALIANCA);
@@ -11,6 +12,12 @@ export class HeroAlianca extends Entity {
         const anims = scene.anims;
         const animsFrameRate = 9;
         this.textureKey = texture;
+        
+        this.moveSpeed = 50;
+
+        this.setSize(28, 32)
+        this.setOffset(10, 16)
+        this.setScale(0.8)
 
         anims.create({
             key: 'down',
@@ -53,26 +60,32 @@ export class HeroAlianca extends Entity {
         })        
     }
 
-    override update(delta: number): void {
-        const keys = this.scene.input.keyboard.createCursorKeys();
+    override update() {
+        const cursors = this.scene.input.keyboard.createCursorKeys()
+        const delta = this.scene.game.loop.delta;
 
-        if (keys.up.isDown){
-            this.play('up', true);
-            this.setPosition(this.x, this.y - 1)
-        } else if (keys.down.isDown) {
-            this.play('down', true);
-            this.setPosition(this.x, this.y + 1)
-        } else if (keys.left.isDown) {
-            this.play('left', true);
-            this.setPosition(this.x - 1, this.y)
-        } else if (keys.right.isDown) {
-            this.play('right', true);
-            this.setPosition(this.x + 1, this.y)
+        this.resetFlip()
+        
+        if (cursors.up.isDown) {
+            this.play('up', true)
+            this.setVelocity(0, -delta * this.moveSpeed)
+            
+        } else if (cursors.down.isDown) {
+            this.play('down', true)
+            this.setVelocity(0, delta * this.moveSpeed)
+            
+        } else if (cursors.left.isDown) {
+            this.play('left', true)
+            this.setVelocity(-delta * this.moveSpeed, 0)
+            
+        } else if (cursors.right.isDown) {
+            this.play('right', true)
+            this.setVelocity(delta * this.moveSpeed, 0)
+            
         } else {
-            this.stop();
+            this.setVelocity(0, 0)
+            this.stop()
         }
-
-
     }
 }
 
