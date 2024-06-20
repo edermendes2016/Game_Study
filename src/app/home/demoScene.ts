@@ -3,6 +3,7 @@ import { createRobot, loadRobotSprites } from './robo';
 import  elwynnJson from 'src/assets/map_att/elwynn.json';
 import { HeroAlianca, loadHeroSprites } from '../entities/personagemWar';
 import { LAYERS, SIZES, SPRITES, TILES } from '../utils/constants';
+import { Enemy01, loadEmemy01Sprites } from '../entities/enemy01';
 //Forma de importar as imagens direto do json
 
 
@@ -14,6 +15,7 @@ export class DemoScene extends Phaser.Scene{
     robotDeath!: Phaser.GameObjects.Sprite;
     alianca!: any;
     heroAlianca?: HeroAlianca;
+    enemy01?: Enemy01;
    
 
     constructor() {
@@ -26,6 +28,7 @@ export class DemoScene extends Phaser.Scene{
         this.load.tilemapTiledJSON('map', 'assets/map_att/elwynn.json');      
         
         loadHeroSprites(this);
+        loadEmemy01Sprites(this);
     }
 
     create() {              
@@ -38,6 +41,7 @@ export class DemoScene extends Phaser.Scene{
         const wallLayer = map.createLayer(LAYERS.WALLS, tileset, 0, 0);   
        
         this.heroAlianca = new HeroAlianca(this, 400, 250, SPRITES.HEROALIANCA)
+        this.enemy01 = new Enemy01(this, 600, 400, SPRITES.BOAR);
 
         this.physics.world.setBounds(0,0,map.widthInPixels,map.heightInPixels);
         this.cameras.main.setBounds(0,0,map.widthInPixels,map.heightInPixels);       

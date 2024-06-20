@@ -13,7 +13,7 @@ export class HeroAlianca extends Entity {
         const animsFrameRate = 9;
         this.textureKey = texture;
         
-        this.moveSpeed = 50;
+        this.moveSpeed = 60;
 
         this.setSize(28, 32)
         this.setOffset(10, 16)
@@ -62,7 +62,7 @@ export class HeroAlianca extends Entity {
 
     override update() {
         const cursors = this.scene.input.keyboard.createCursorKeys()
-        const delta = this.scene.game.loop.delta;
+        const delta = 3;
 
         this.resetFlip()
         
