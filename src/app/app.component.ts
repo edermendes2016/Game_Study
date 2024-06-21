@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import Phaser = require('phaser');
+import Phaser from "phaser";
 // import { IsometricScene } from './isometric-scene';
 // import { MenuScene } from './menu-scene';
 

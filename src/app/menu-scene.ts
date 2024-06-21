@@ -1,4 +1,4 @@
-import Phaser = require("phaser");
+import Phaser from "phaser";
 
 export class MenuScene extends Phaser.Scene {
   constructor() {

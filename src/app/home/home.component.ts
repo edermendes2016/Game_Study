@@ -13,7 +13,7 @@ import { DemoScene } from './demoScene';
 export class HomeComponent implements OnInit, OnDestroy {
   config: Phaser.Types.Core.GameConfig;
   game!: Phaser.Game;
-
+  
   constructor() { 
     this.config = {      
       type: Phaser.AUTO,
