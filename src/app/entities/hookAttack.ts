@@ -3,6 +3,7 @@ import { HeroAlianca } from './aliancaPlayer';
 
 interface HookScene extends Phaser.Scene {
     canHeroMove: boolean;
+    canHordaMove: boolean;
 }
 
 export class HookAttack {
@@ -25,6 +26,7 @@ export class HookAttack {
 
         this.isHookActive = true;
         this.scene.canHeroMove = false; // Impedir que o herói se mova durante o ataque
+        this.scene.canHordaMove = false;
 
         // Posição inicial do gancho
         const hookStartX = this.heroHorda.x;
@@ -101,6 +103,7 @@ export class HookAttack {
                 this.hook.destroy();
                 this.isHookActive = false; // Permitir disparar outro gancho
                 this.scene.canHeroMove = true; // Permitir que o herói se mova novamente
+                this.scene.canHordaMove = true;
             }
         });
     }

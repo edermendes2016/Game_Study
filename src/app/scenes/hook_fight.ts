@@ -12,6 +12,7 @@ export class HookScene extends Phaser.Scene {
     heroHorda!: HeroHorda;
     hook!: HookAttack;
     canHeroMove: boolean = true; // Controle do movimento do herói
+    canHordaMove: boolean = true;
 
     constructor() {
         super("HookScene");
@@ -81,6 +82,8 @@ export class HookScene extends Phaser.Scene {
         if (this.canHeroMove) {
             this.heroAlianca?.update();
         }
-        this.heroHorda?.update();
+        if (this.canHordaMove) {
+            this.heroHorda?.update();
+        }
     }
 }
