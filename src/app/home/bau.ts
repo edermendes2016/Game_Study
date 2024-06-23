@@ -8,7 +8,7 @@ export const loadBauSprites = (scene: Phaser.Scene): void => {
 
 export const createBau = (scene: Phaser.Scene): Phaser.GameObjects.Sprite => {
     // Criar sprite do baú na cena
-    const bau = scene.add.sprite(400, 300, 'bau');
+    const bau = scene.add.sprite(50, 50, 'bau');
 
     // Definir a animação inicial como fechada
     bau.anims.play('bau_closed');

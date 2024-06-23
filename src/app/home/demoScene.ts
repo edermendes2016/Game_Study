@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { createRobot, loadRobotSprites } from './robo';
 import  elwynnJson from 'src/assets/map_att/elwynn.json';
-import { HeroAlianca, loadHeroSprites } from '../entities/personagemWar';
+import { HeroAlianca, loadAliancaSprites } from '../entities/aliancaPlayer';
 import { LAYERS, SIZES, SPRITES, TILES } from '../utils/constants';
 import { Enemy01, loadEmemy01Sprites } from '../entities/enemy01';
 //Forma de importar as imagens direto do json
@@ -27,7 +27,7 @@ export class DemoScene extends Phaser.Scene{
         this.load.image(TILES.ELVIN_FOREST, 'assets/map_att/summer_tiles.png');
         this.load.tilemapTiledJSON('map', 'assets/map_att/elwynn.json');      
         
-        loadHeroSprites(this);
+        loadAliancaSprites(this);
         loadEmemy01Sprites(this);
     }
 
@@ -40,7 +40,7 @@ export class DemoScene extends Phaser.Scene{
         const groundLayer = map.createLayer(LAYERS.GROUND, tileset, 0, 0);
         const wallLayer = map.createLayer(LAYERS.WALLS, tileset, 0, 0);   
        
-        this.heroAlianca = new HeroAlianca(this, 400, 250, SPRITES.HEROALIANCA)
+        this.heroAlianca = new HeroAlianca(this, 400, 250, SPRITES.ALIANCA)
         this.enemy01 = new Enemy01(this, 600, 400, SPRITES.BOAR);
 
         this.physics.world.setBounds(0,0,map.widthInPixels,map.heightInPixels);

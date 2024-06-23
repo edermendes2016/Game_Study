@@ -4,6 +4,7 @@ import * as Phaser from 'phaser';
 import { GameScene } from './game';
 import { MenuScene } from '../menu-scene';
 import { DemoScene } from './demoScene';
+import { HookScene } from '../scenes/hook_fight';
 
 @Component({
   selector: 'app-home',
@@ -24,9 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
       },
-      physics: { default: "arcade", arcade: { debug: true } },
+      physics: { default: "arcade", arcade: { debug: false } },
       // scene: [MenuScene, GameScene, DemoScene],
-      scene: [DemoScene],
+      scene: [HookScene],
       pixelArt: true
     }
   }

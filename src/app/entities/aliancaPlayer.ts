@@ -6,7 +6,7 @@ export class HeroAlianca extends Entity {
     moveSpeed: number;
     
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
-        super(scene, x, y, texture, SPRITES.HEROALIANCA);
+        super(scene, x, y, texture, SPRITES.ALIANCA);
 
         // Criando a animação        
         const anims = scene.anims;
@@ -89,8 +89,8 @@ export class HeroAlianca extends Entity {
     }
 }
 
-export const loadHeroSprites = (scene: Phaser.Scene): void => { 
-    scene.load.spritesheet(SPRITES.HEROALIANCA, 'assets/heros/alliance.png', {
+export const loadAliancaSprites = (scene: Phaser.Scene): void => { 
+    scene.load.spritesheet(SPRITES.ALIANCA, 'assets/heros/alliance.png', {
         frameWidth: SIZES.PLAYER.WIDTH,
         frameHeight: SIZES.PLAYER.HEIGHT
     });

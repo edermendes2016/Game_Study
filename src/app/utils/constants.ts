@@ -8,18 +8,22 @@ export const SPRITES = {
     PORTAL: {
         BASE: 'portal',
     },
-    HEROALIANCA: 'heroAlianca'
+    ALIANCA: 'alliance',
+    HORDA: 'horda'
 }
 
 export const LAYERS = {
     GROUND: 'ground',
-    WALLS: 'walls'
+    WALLS: 'walls',
+    WATER: 'water',
+    SHOP: 'shop'
 }
 
 export const TILES = {
     DUROTAR: 'durotar',
     ELVIN_FOREST: 'elvin_forest',
     DUNGEON: 'dungeon',
+    HOOK: "hook",
 }
 
 export const SIZES = {
@@ -44,4 +48,5 @@ export const GAME_CONFIG = {
 export const TILEMAP_KEYS = {
     DUNGEON: 'dungeon',
     ELVIN_FOREST: 'elvin_forest',
+    HOOK: 'hook'
 }
