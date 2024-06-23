@@ -25,8 +25,7 @@ export class HookScene extends Phaser.Scene {
         loadShopAliancaSprites(this);
         loadShopHordaSprites(this);
 
-        loadHookSprites(this);
-        this.load.spritesheet('rope', 'assets/attack/rope.png', { frameWidth: 16, frameHeight: 16 });
+        loadHookSprites(this);        
 
         loadAliancaSprites(this);
         loadHordaSprites(this);

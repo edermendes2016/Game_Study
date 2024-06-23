@@ -67,6 +67,16 @@ export class HeroHorda extends Entity {
             repeat: -1
         });
 
+        anims.create({
+            key: 'horda_hook',
+            frames: anims.generateFrameNumbers(this.textureKey, {
+                start: 48,
+                end: 50
+            }),
+            frameRate: 20,
+            
+        });
+
         this.keys = this.scene.input.keyboard.addKeys({
             w: Phaser.Input.Keyboard.KeyCodes.W,
             a: Phaser.Input.Keyboard.KeyCodes.A,

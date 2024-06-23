@@ -32,12 +32,15 @@ export class HookAttack {
         // Resetar a velocidade do personagem Horda
         this.heroHorda.setVelocity(0, 0);
 
+         // Chamar a animação de hook up
+         this.heroHorda.play('horda_hook', true);
+
         // Posição inicial do gancho
-        const hookStartX = this.heroHorda.x;
-        const hookStartY = this.heroHorda.y;
+        const hookStartX = this.heroHorda.x + 13;
+        const hookStartY = this.heroHorda.y - 7;
 
         // Ajustar a posição inicial da corda
-        const ropeOffsetX = -4; // Ajuste conforme necessário
+        const ropeOffsetX = 0; // Ajuste conforme necessário
         const ropeOffsetY = 0; // Ajuste conforme necessário para mover a corda para frente
 
         // Criar o sprite da corda com a animação
@@ -60,12 +63,12 @@ export class HookAttack {
         // Definir o crescimento da corda
         this.scene.tweens.add({
             targets: this.rope,
-            displayHeight: 320, // Aumente a altura final da corda conforme necessário
-            duration: 1500, // Duração do crescimento da corda
+            displayHeight: 300, // Aumente a altura final da corda conforme necessário
+            duration: 1000, // Duração do crescimento da corda
             onUpdate: () => {
                 // Manter a posição da base da corda constante e apenas estender para cima
                 this.rope.y = hookStartY - this.rope.displayHeight / 2;
-                this.hook.y = this.rope.y - this.rope.displayHeight / 2;
+                this.hook.y = this.rope.y - this.rope.displayHeight / 2 - 8; // Ajuste conforme necessário para manter o gancho alinhado
             },
             onComplete: () => {
                 // Iniciar o retorno do gancho se não atingir o inimigo
@@ -94,10 +97,10 @@ export class HookAttack {
         this.scene.tweens.add({
             targets: this.rope,
             displayHeight: 1, // Voltar a altura da corda ao valor inicial
-            duration: 800, // Duração do retorno da corda
+            duration: 700, // Duração do retorno da corda
             onUpdate: () => {
                 // Manter a posição da base da corda constante durante o retorno
-                const hookStartY = this.heroHorda.y;
+                const hookStartY = this.heroHorda.y - 7;
                 this.rope.y = hookStartY - this.rope.displayHeight / 2;
                 this.hook.y = this.rope.y - this.rope.displayHeight / 2;
             },
