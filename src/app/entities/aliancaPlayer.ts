@@ -80,6 +80,11 @@ export class HeroAlianca extends Entity {
             const cursors = this.scene.input.keyboard.createCursorKeys();
             const delta = 3;
 
+            if (!(this.scene as any).canHeroMove) {
+                this.setVelocity(0, 0);
+                return;
+            }
+
             this.resetFlip();
 
             if (cursors.up.isDown) {

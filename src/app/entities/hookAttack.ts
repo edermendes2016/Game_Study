@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { HeroAlianca } from './aliancaPlayer';
+import { HeroHorda } from './hordaPlayer';
 
 interface HookScene extends Phaser.Scene {
     canHeroMove: boolean;
@@ -11,10 +12,10 @@ export class HookAttack {
     hook!: Phaser.Physics.Arcade.Sprite;
     rope!: Phaser.GameObjects.Sprite;
     isHookActive: boolean;
-    heroHorda: Phaser.Physics.Arcade.Sprite;
-    heroAlianca: HeroAlianca; // Use o tipo HeroAlianca
+    heroHorda: HeroHorda;
+    heroAlianca: HeroAlianca;
 
-    constructor(scene: HookScene, heroHorda: Phaser.Physics.Arcade.Sprite, heroAlianca: HeroAlianca) {
+    constructor(scene: HookScene, heroHorda: HeroHorda, heroAlianca: HeroAlianca) {
         this.scene = scene;
         this.heroHorda = heroHorda;
         this.heroAlianca = heroAlianca;
@@ -26,7 +27,10 @@ export class HookAttack {
 
         this.isHookActive = true;
         this.scene.canHeroMove = false; // Impedir que o herói se mova durante o ataque
-        this.scene.canHordaMove = false;
+        this.scene.canHordaMove = false; // Impedir que o personagem Horda se mova durante o ataque
+
+        // Resetar a velocidade do personagem Horda
+        this.heroHorda.setVelocity(0, 0);
 
         // Posição inicial do gancho
         const hookStartX = this.heroHorda.x;
@@ -41,7 +45,7 @@ export class HookAttack {
         this.rope.play('ropeAnim');
 
         // Criar o sprite do gancho
-        this.hook = this.scene.physics.add.sprite(hookStartX, hookStartY, 'att_hook').setScale(1.5);
+        this.hook = this.scene.physics.add.sprite(hookStartX, hookStartY, 'att_hook').setScale(1.2);
 
         // Verificar se a animação existe antes de reproduzir
         if (this.hook.anims) {
@@ -103,7 +107,7 @@ export class HookAttack {
                 this.hook.destroy();
                 this.isHookActive = false; // Permitir disparar outro gancho
                 this.scene.canHeroMove = true; // Permitir que o herói se mova novamente
-                this.scene.canHordaMove = true;
+                this.scene.canHordaMove = true; // Permitir que o personagem Horda se mova novamente
             }
         });
     }
