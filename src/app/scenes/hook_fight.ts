@@ -18,10 +18,12 @@ export class HookScene extends Phaser.Scene {
     canHordaMove: boolean = true;
     waterSplash: Phaser.Sound.BaseSound | undefined;
     enemies!: Phaser.Physics.Arcade.Group;
-    enemiesDestroyed: number = 0;
+    enemiesDestroyed: number;
 
     constructor() {
         super("HookScene");
+
+        this.enemiesDestroyed = 0;
     }
 
     preload() {
@@ -117,11 +119,10 @@ export class HookScene extends Phaser.Scene {
                         this.scene.add('GameScene', GameScene, true);
                     });
                    console.log('Proxima Scene')
+                   this.enemiesDestroyed = 0;
                 }
             });
-        });
-
-        
+        });        
     }
 
     override update() {
