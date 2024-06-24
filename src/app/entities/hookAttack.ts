@@ -32,8 +32,8 @@ export class HookAttack {
         // Resetar a velocidade do personagem Horda
         this.heroHorda.setVelocity(0, 0);
 
-         // Chamar a animação de hook up
-         this.heroHorda.play('horda_hook', true);
+        // Chamar a animação de hook up
+        this.heroHorda.play('horda_hook', true);
 
         // Posição inicial do gancho
         const hookStartX = this.heroHorda.x + 13;
@@ -44,15 +44,18 @@ export class HookAttack {
         const ropeOffsetY = 0; // Ajuste conforme necessário para mover a corda para frente
 
         // Criar o sprite da corda com a animação
-        this.rope = this.scene.add.sprite(hookStartX + ropeOffsetX, hookStartY + ropeOffsetY, 'rope').setScale(1);
+        // this.rope = this.scene.add.sprite(hookStartX + ropeOffsetX, hookStartY + ropeOffsetY, 'rope').setScale(4);
+
+        // Criar o sprite da corda com a animação
+        this.rope = this.scene.add.sprite(hookStartX, hookStartY, 'rope').setScale(0.2);
         this.rope.play('ropeAnim');
 
         // Criar o sprite do gancho
-        this.hook = this.scene.physics.add.sprite(hookStartX, hookStartY, 'att_hook').setScale(1.2);
+        this.hook = this.scene.physics.add.sprite(hookStartX, hookStartY, 'att_hook').setScale(0.7);
 
         // Verificar se a animação existe antes de reproduzir
         if (this.hook.anims) {
-            this.hook.play('hookAttack');
+            this.hook.play('att_hook_anim');
         } else {
             console.error('A animação "hookAttack" não foi encontrada.');
         }
@@ -77,6 +80,8 @@ export class HookAttack {
                 }
             }
         });
+
+
     }
 
     onHookHit(object1: Phaser.GameObjects.GameObject, object2: Phaser.GameObjects.GameObject) {
@@ -88,6 +93,7 @@ export class HookAttack {
             const riverY = this.heroHorda.y; // Ajuste conforme necessário para posicionar o herói no rio
 
             heroAlianca.bePulled(this.heroHorda.x, riverY, 1000); // Puxar o herói Alianca em direção ao herói Horda e para dentro do rio
+            
             this.retractHook(); // Iniciar a animação de retorno do gancho
         }
     }
@@ -114,15 +120,29 @@ export class HookAttack {
             }
         });
     }
+
 }
 
-export const loadHookSprites = (scene: Phaser.Scene): void => { 
+export const loadHookSprites = (scene: Phaser.Scene): void => {
     scene.load.spritesheet('att_hook', 'assets/attack/att_hook.png', {
-        frameWidth: 16,
-        frameHeight: 16        
+        frameWidth: 32,
+        frameHeight: 32
     });
     scene.load.spritesheet('rope', 'assets/attack/rope.png', {
-        frameWidth: 16,
-        frameHeight: 16        
+        frameWidth: 32,
+        frameHeight: 32,
+        endFrame: 15
+    });    
+};
+
+// No método create da sua cena:
+export const createAnimationsHook = (scene: Phaser.Scene): void => {
+    // Animação do ataque com o gancho
+    scene.anims.create({
+        key: 'att_hook_anim',
+        frames: scene.anims.generateFrameNumbers('att_hook', { start: 0, end: 5 }), // ajuste os frames conforme necessário
+        frameRate: 10,
+
     });
+
 };

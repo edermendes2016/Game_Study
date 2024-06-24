@@ -124,6 +124,14 @@ export class HeroAlianca extends Entity {
 
     handleWaterCollision() {
         this.setVisible(false);
+
+        // Tocar som de caindo na água
+        // Verificar se o áudio está carregado antes de tocar
+        if (this.scene.sound.get('waterSplash')) {
+            this.scene.sound.play('waterSplash');
+        } else {
+            console.error('O áudio "waterSplash" não foi carregado.');
+        }
         this.respawn();
     }
 

@@ -5,7 +5,7 @@ import { HeroAlianca, loadAliancaSprites } from '../entities/aliancaPlayer';
 import { HeroHorda, loadHordaSprites } from '../entities/hordaPlayer';
 import { createShopAlianca, createShopHorda, loadShopAliancaSprites, loadShopHordaSprites } from '../entities/shop';
 
-import { HookAttack, loadHookSprites } from '../entities/hookAttack';
+import { HookAttack, createAnimationsHook, loadHookSprites } from '../entities/hookAttack';
 
 export class HookScene extends Phaser.Scene {
     heroAlianca!: HeroAlianca;
@@ -13,6 +13,7 @@ export class HookScene extends Phaser.Scene {
     hook!: HookAttack;
     canHeroMove: boolean = true; // Controle do movimento do herói
     canHordaMove: boolean = true;
+    waterSplash: Phaser.Sound.BaseSound | undefined;
 
     constructor() {
         super("HookScene");
@@ -20,15 +21,21 @@ export class HookScene extends Phaser.Scene {
 
     preload() {
         this.load.image(TILES.HOOK, 'assets/map_att/summer_tiles.png');
-        this.load.tilemapTiledJSON('map', 'assets/map_att/hook.json');
+        this.load.tilemapTiledJSON('map', 'assets/map_att/hook.json');    
+
 
         loadShopAliancaSprites(this);
         loadShopHordaSprites(this);
 
-        loadHookSprites(this);        
+        this.load.audio('waterSplash', ['assets/sounds/splash.mp3']);
+        loadHookSprites(this);  
+
 
         loadAliancaSprites(this);
         loadHordaSprites(this);
+
+        
+        
     }
 
     create() {
@@ -55,11 +62,15 @@ export class HookScene extends Phaser.Scene {
         const shopAlianca = createShopAlianca(this);
         const shopHorda = createShopHorda(this);
 
+        this.waterSplash = this.sound.add("waterSplash");
+
+        createAnimationsHook(this);
+
         this.anims.create({
             key: 'ropeAnim',
-            frames: this.anims.generateFrameNumbers('rope', { start: 0, end: 3 }), // Assumindo 4 frames de animação
-            frameRate: 10,
-            repeat: -1 // Loop contínuo
+            frames: this.anims.generateFrameNumbers('rope', { start: 0, end: 15 }),
+            frameRate: 10
+           
         });
 
         this.hook = new HookAttack(this, this.heroHorda, this.heroAlianca);
