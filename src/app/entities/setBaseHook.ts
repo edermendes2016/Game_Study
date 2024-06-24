@@ -5,6 +5,12 @@ export class SetBaseHook extends Entity {
     initialX: number;
     initialY: number;
     moveSpeed: number;
+    attackCooldown: number;
+    lastAttackTime: number;
+    dashSpeed: number;
+    dashCooldown: number;
+    lastDashTime: number;
+    attackEvent: Phaser.Time.TimerEvent;
     
 
     constructor({ scene, x, y, textures }: IEntity) {
@@ -12,7 +18,19 @@ export class SetBaseHook extends Entity {
         this.initialX = x;
         this.initialY = y;
         this.moveSpeed = 60;
+        this.attackCooldown = 2000; // Tempo entre ataques em milissegundos
+        this.lastAttackTime = 0; // Tempo do último ataque
+        this.dashSpeed = 300; // Velocidade do dash
+        this.dashCooldown = 5000; // Tempo entre dashes em milissegundos
+        this.lastDashTime = 0; // Tempo do último dash
         
+        // Adicionar um timer para o ataque à distância
+        this.attackEvent = scene.time.addEvent({
+            delay: 1000, // Intervalo entre tentativas de ataque
+            callback: this.tryRangeAttack,
+            callbackScope: this, // Garantir que o callback tenha o escopo correto
+            loop: true
+        });
 
         // Configurações adicionais se necessário
         this.setSize(28, 32);
@@ -56,6 +74,47 @@ export class SetBaseHook extends Entity {
         });
 
         this.destroy();
+    }
+
+    tryRangeAttack() {
+        const currentTime = this.scene.time.now;
+        if (currentTime - this.lastAttackTime > this.attackCooldown) {
+            this.lastAttackTime = currentTime;
+            this.rangeAttack();
+        }
+    }
+
+    rangeAttack() {
+        // Lógica para criar e lançar um projétil
+        const projectile = this.scene.physics.add.sprite(this.x, this.y, 'projectile_texture');
+        const target = (this.scene as any).heroHorda; // Acessando heroHorda na cena
+        if (target) {
+            this.scene.physics.moveTo(projectile, target.x, target.y, 600);
+        }
+        projectile.setCollideWorldBounds(true);
+        projectile.on('worldbounds', () => {
+            projectile.destroy();
+        });
+    }
+    
+    dash() {
+        const currentTime = this.scene.time.now;
+        if (currentTime - this.lastDashTime > this.dashCooldown) {
+            this.lastDashTime = currentTime;
+
+            const target = (this.scene as any).hook; // Acessando hook na cena
+            if (target) {
+                const dashDirection = new Phaser.Math.Vector2(this.x - target.x, this.y - target.y).normalize();
+                this.scene.physics.moveTo(this, this.x + dashDirection.x * this.dashSpeed, this.y + dashDirection.y * this.dashSpeed, this.dashSpeed);
+            }
+        }
+    }
+
+    override destroy() {
+        if (this.attackEvent) {
+            this.attackEvent.remove(); // Remover o evento de ataque
+        }
+        super.destroy();
     }
 
     respawn() {
