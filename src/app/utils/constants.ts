@@ -4,12 +4,24 @@ export const SPRITES = {
         FIGHT: 'player_fight',
         TYPE: 'player'
     },
-    BOAR: 'boar',
+    BOAR: {
+        BASE: 'boar',
+        FIGHT: 'boar_fight',
+        TYPE: 'boar'
+    },
     PORTAL: {
         BASE: 'portal',
     },
-    ALIANCA: 'alliance',
-    HORDA: 'horda'
+    ALIANCA: {
+        BASE: 'alliance',
+        FIGHT: 'alliance_fight',
+        TYPE: 'alliance'
+    },
+    HORDA: {
+        BASE: 'horda',
+        FIGHT: 'horda_fight',
+        TYPE: 'horda'
+    }
 }
 
 export const LAYERS = {

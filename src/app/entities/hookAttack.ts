@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
-import { HeroAlianca } from './aliancaPlayer';
 import { HeroHorda } from './hordaPlayer';
+import { SetBaseHook } from './setBaseHook';
 
 interface HookScene extends Phaser.Scene {
     canHeroMove: boolean;
@@ -13,12 +13,12 @@ export class HookAttack {
     rope!: Phaser.GameObjects.Sprite;
     isHookActive: boolean;
     heroHorda: HeroHorda;
-    heroAlianca: HeroAlianca;
+    enemies: Phaser.Physics.Arcade.Group;
 
-    constructor(scene: HookScene, heroHorda: HeroHorda, heroAlianca: HeroAlianca) {
+    constructor(scene: HookScene, heroHorda: HeroHorda, enemies: Phaser.Physics.Arcade.Group) {
         this.scene = scene;
         this.heroHorda = heroHorda;
-        this.heroAlianca = heroAlianca;
+        this.enemies = enemies;
         this.isHookActive = false;
     }
 
@@ -33,18 +33,11 @@ export class HookAttack {
         this.heroHorda.setVelocity(0, 0);
 
         // Chamar a animação de hook up
-        this.heroHorda.play('horda_hook', true);
+        this.heroHorda.play('horda_up', true);
 
         // Posição inicial do gancho
         const hookStartX = this.heroHorda.x + 13;
         const hookStartY = this.heroHorda.y - 7;
-
-        // Ajustar a posição inicial da corda
-        const ropeOffsetX = 0; // Ajuste conforme necessário
-        const ropeOffsetY = 0; // Ajuste conforme necessário para mover a corda para frente
-
-        // Criar o sprite da corda com a animação
-        // this.rope = this.scene.add.sprite(hookStartX + ropeOffsetX, hookStartY + ropeOffsetY, 'rope').setScale(4);
 
         // Criar o sprite da corda com a animação
         this.rope = this.scene.add.sprite(hookStartX, hookStartY, 'rope').setScale(0.2);
@@ -60,8 +53,8 @@ export class HookAttack {
             console.error('A animação "hookAttack" não foi encontrada.');
         }
 
-        // Adicionar detecção de colisão entre o gancho e o herói Alianca
-        this.scene.physics.add.overlap(this.hook, this.heroAlianca, this.onHookHit, undefined, this);
+        // Adicionar detecção de colisão entre o gancho e os inimigos
+        this.scene.physics.add.overlap(this.hook, this.enemies, this.onHookHit, undefined, this);
 
         // Definir o crescimento da corda
         this.scene.tweens.add({
@@ -80,20 +73,16 @@ export class HookAttack {
                 }
             }
         });
-
-
     }
 
-    onHookHit(object1: Phaser.GameObjects.GameObject, object2: Phaser.GameObjects.GameObject) {
+    onHookHit(hook: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
         console.log('Hook hit enemy, pulling enemy to heroHorda');
 
-        const heroAlianca = object1 === this.hook ? object2 : object1;
-
-        if (heroAlianca instanceof HeroAlianca) {
+        if (enemy instanceof SetBaseHook) {
             const riverY = this.heroHorda.y; // Ajuste conforme necessário para posicionar o herói no rio
 
-            heroAlianca.bePulled(this.heroHorda.x, riverY, 1000); // Puxar o herói Alianca em direção ao herói Horda e para dentro do rio
-            
+            enemy.bePulled(this.heroHorda.x, riverY, 1000); // Puxar o inimigo em direção ao herói Horda e para dentro do rio
+
             this.retractHook(); // Iniciar a animação de retorno do gancho
         }
     }
@@ -120,7 +109,6 @@ export class HookAttack {
             }
         });
     }
-
 }
 
 export const loadHookSprites = (scene: Phaser.Scene): void => {
@@ -142,7 +130,5 @@ export const createAnimationsHook = (scene: Phaser.Scene): void => {
         key: 'att_hook_anim',
         frames: scene.anims.generateFrameNumbers('att_hook', { start: 0, end: 5 }), // ajuste os frames conforme necessário
         frameRate: 10,
-
     });
-
 };

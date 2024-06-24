@@ -23,7 +23,7 @@ export class GameScene extends Phaser.Scene {
     robot!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
     constructor() {
-        super("GameScene");
+        super("GameSceneTeste");
     }
 
     preload() {

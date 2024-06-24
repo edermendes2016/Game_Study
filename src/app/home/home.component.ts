@@ -1,10 +1,10 @@
 import { PlatformLocation } from '@angular/common';
 import { Component, OnDestroy, OnInit, PlatformRef } from '@angular/core';
 import * as Phaser from 'phaser';
-import { GameScene } from './game';
 import { MenuScene } from '../menu-scene';
 import { DemoScene } from './demoScene';
 import { HookScene } from '../scenes/hook_fight';
+import { GameScene } from './gameTeste';
 
 @Component({
   selector: 'app-home',
@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
       },
-      physics: { default: "arcade", arcade: { debug: false } },
-      // scene: [MenuScene, GameScene, DemoScene],
-      scene: [HookScene],
+      physics: { default: "arcade", arcade: { debug: true } },
+      scene: [MenuScene, GameScene, DemoScene, HookScene],
+      //scene: [HookScene, GameScene],
       pixelArt: true
     }
   }

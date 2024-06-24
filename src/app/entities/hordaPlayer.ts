@@ -1,5 +1,5 @@
 import { SIZES, SPRITES } from "../utils/constants";
-import { Entity } from "./entity";
+import { Entity, IEntity } from "./entity";
 
 interface KeyMapping {
     w: Phaser.Input.Keyboard.Key;
@@ -9,17 +9,21 @@ interface KeyMapping {
 }
 
 export class HeroHorda extends Entity {
-    textureKey: string;
+    
     moveSpeed: number;
     keys: KeyMapping;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
-        super(scene, x, y, texture, SPRITES.HORDA);
+    constructor({ scene, x, y, textures }: IEntity) {
+        if (!textures || !textures.base) {
+            throw new Error('textures.base is required');
+        }
+
+        super({ scene, x, y, textures, type: SPRITES.HORDA.TYPE });
 
         // Criando a animação        
         const anims = scene.anims;
         const animsFrameRate = 9;
-        this.textureKey = texture;
+        
         
         this.moveSpeed = 60;
 
@@ -27,55 +31,10 @@ export class HeroHorda extends Entity {
         this.setOffset(10, 16);
         this.setScale(0.8);
 
-        anims.create({
-            key: 'horda_down',
-            frames: anims.generateFrameNumbers(this.textureKey, {
-                start: 0,
-                end: 2
-            }),
-            frameRate: animsFrameRate,
-            repeat: -1
-        });
-
-        anims.create({
-            key: 'horda_left',
-            frames: anims.generateFrameNumbers(this.textureKey, {
-                start: 12,
-                end: 14
-            }),
-            frameRate: animsFrameRate,
-            repeat: -1
-        });
-
-        anims.create({
-            key: 'horda_right',
-            frames: anims.generateFrameNumbers(this.textureKey, {
-                start: 24,
-                end: 26
-            }),
-            frameRate: animsFrameRate,
-            repeat: -1
-        });
-
-        anims.create({
-            key: 'horda_up',
-            frames: anims.generateFrameNumbers(this.textureKey, {
-                start: 36,
-                end: 38
-            }),
-            frameRate: animsFrameRate,
-            repeat: -1
-        });
-
-        anims.create({
-            key: 'horda_hook',
-            frames: anims.generateFrameNumbers(this.textureKey, {
-                start: 48,
-                end: 50
-            }),
-            frameRate: 20,
-            
-        });
+        this.createAnimation('horda_down', textures.base, 0, 2, anims, animsFrameRate);
+        this.createAnimation('horda_left', textures.base, 12, 14, anims, animsFrameRate);
+        this.createAnimation('horda_right', textures.base, 24, 26, anims, animsFrameRate);
+        this.createAnimation('horda_up', textures.base, 36, 38, anims, animsFrameRate);
 
         this.keys = this.scene.input.keyboard.addKeys({
             w: Phaser.Input.Keyboard.KeyCodes.W,
@@ -115,7 +74,7 @@ export class HeroHorda extends Entity {
 }
 
 export const loadHordaSprites = (scene: Phaser.Scene): void => { 
-    scene.load.spritesheet(SPRITES.HORDA, 'assets/heros/horda.png', {
+    scene.load.spritesheet(SPRITES.HORDA.BASE, 'assets/heros/horda.png', {
         frameWidth: SIZES.PLAYER.WIDTH,
         frameHeight: SIZES.PLAYER.HEIGHT
     });

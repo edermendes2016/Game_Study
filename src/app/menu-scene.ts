@@ -10,9 +10,13 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create() {
-    const playButton = this.add.text(400, 100, 'Play', { fontSize: '132px' })
+    const playButton = this.add.text(400, 50, 'Play', { fontSize: '132px' })
       .setInteractive()
       .on('pointerdown', () => this.scene.start('GameScene'));
+
+      const hookButton = this.add.text(400, 150, 'Hook', { fontSize: '132px' })
+      .setInteractive()
+      .on('pointerdown', () => this.scene.start('HookScene'));
 
     const demoButton = this.add.text(400, 250, 'Demo', { fontSize: '132px' })
       .setInteractive()
@@ -26,8 +30,9 @@ export class MenuScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => console.log('Quit button clicked'));
 
-    playButton.setOrigin(0.5);
-    demoButton.setOrigin(0.5);
-    quitButton.setOrigin(0.5);
+    playButton.setOrigin(0.4);
+    hookButton.setOrigin(0.4);
+    demoButton.setOrigin(0.4);
+    quitButton.setOrigin(0.4);
   }
 }

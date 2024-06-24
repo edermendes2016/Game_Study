@@ -40,8 +40,9 @@ export class DemoScene extends Phaser.Scene{
         const groundLayer = map.createLayer(LAYERS.GROUND, tileset, 0, 0);
         const wallLayer = map.createLayer(LAYERS.WALLS, tileset, 0, 0);   
        
-        this.heroAlianca = new HeroAlianca(this, 400, 250, SPRITES.ALIANCA)
-        this.enemy01 = new Enemy01(this, 600, 400, SPRITES.BOAR);
+       
+        this.heroAlianca = new HeroAlianca({scene: this, x:400, y:250, textures: { base: SPRITES.ALIANCA.BASE }});
+       // this.enemy01 = new Enemy01(this, 600, 400, SPRITES.BOAR);
 
         this.physics.world.setBounds(0,0,map.widthInPixels,map.heightInPixels);
         this.cameras.main.setBounds(0,0,map.widthInPixels,map.heightInPixels);       
@@ -53,7 +54,7 @@ export class DemoScene extends Phaser.Scene{
         this.heroAlianca.setCollideWorldBounds(true);
 
         this.physics.add.collider(this.heroAlianca, wallLayer);
-        wallLayer.setCollisionByExclusion([-1]);
+      //  wallLayer.setCollisionByExclusion([-1]);
         
     }       
   

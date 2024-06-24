@@ -1,12 +1,18 @@
 import { SIZES, SPRITES } from "../utils/constants";
-import { Entity } from "./entity";
+import { IEntity } from "./entity";
+import { SetBaseHook } from "./setBaseHook";
 
-export class Enemy01 extends Entity {
+export class Enemy01 extends SetBaseHook {
     /**
      *
      */
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
-        super(scene, x, y, texture);
+
+    constructor({ scene, x, y, textures }: IEntity) {
+        if (!textures || !textures.base) {
+            throw new Error('textures.base is required');
+        }
+
+        super({ scene, x, y, textures, type: SPRITES.BOAR.TYPE });    
         this.cycleTween();
         this.setFlipX(true);
     }
@@ -31,7 +37,7 @@ export class Enemy01 extends Entity {
 }
 
 export const loadEmemy01Sprites = (scene: Phaser.Scene): void => { 
-    scene.load.spritesheet(SPRITES.BOAR, 'assets/enemies/boar.png', {
+    scene.load.spritesheet(SPRITES.BOAR.BASE, 'assets/enemies/boar.png', {
         frameWidth: SIZES.BOAR.WIDTH,
         frameHeight: SIZES.BOAR.HEIGHT
     });
