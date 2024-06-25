@@ -25,15 +25,20 @@ export const SPRITES = {
 }
 
 export const LAYERS = {
-    GROUND: 'ground',
-    WALLS: 'walls',
-    WATER: 'water',
-    SHOP: 'shop'
+    HOOKMAP: {
+        GROUND: 'ground',
+        WALLS: 'walls',
+        WATER: 'water',        
+        SHOP: 'shop'
+    },
+    DUNGEONMAP: {
+        LAVA: "lava",
+        WAY: "way",
+        BACKGROUND: "background",
+    }
 }
 
 export const TILES = {
-    DUROTAR: 'durotar',
-    ELVIN_FOREST: 'elvin_forest',
     DUNGEON: 'dungeon',
     HOOK: "hook",
 }
@@ -59,6 +64,5 @@ export const GAME_CONFIG = {
 
 export const TILEMAP_KEYS = {
     DUNGEON: 'dungeon',
-    ELVIN_FOREST: 'elvin_forest',
     HOOK: 'hook'
 }

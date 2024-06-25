@@ -10,7 +10,7 @@ import { PlayerMovement } from './player-movement';
 import { createBau, createBauAnimations, loadBauSprites } from './bau';
 import { createRobot, loadRobotSprites } from './robo';
 
-export class GameScene extends Phaser.Scene {
+export class TesteScene extends Phaser.Scene {
     water: any;
     personagem: any;
     controls: any;
@@ -23,7 +23,7 @@ export class GameScene extends Phaser.Scene {
     robot!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
     constructor() {
-        super("GameSceneTeste");
+        super("TesteScene");
     }
 
     preload() {

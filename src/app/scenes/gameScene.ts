@@ -1,9 +1,10 @@
 import Phaser from "phaser";
-import { LAYERS, SIZES, SPRITES, TILES } from "../utils/constants";
-import hookJson from 'src/assets/map_att/hook.json';
+import { LAYERS, SIZES, SPRITES, TILEMAP_KEYS, TILES } from "../utils/constants";
+import dungeon from 'src/assets/map_att/dungeon.json';
 import { Portal } from "../entities/portal";
 import { HeroHorda, loadHordaSprites } from "../entities/hordaPlayer";
-import { HookScene } from "./hook_fight";
+import { HookScene } from '../scenes/hookScene'
+
 
 export class GameScene extends Phaser.Scene {
   heroHorda!: HeroHorda;
@@ -14,39 +15,50 @@ export class GameScene extends Phaser.Scene {
 
   preload() {
     // Carregar recursos necessários para a cena do jogo
-    this.load.image(TILES.HOOK, 'assets/map_att/summer_tiles.png');
-    this.load.tilemapTiledJSON('map', 'assets/map_att/hook.json');
+    this.load.image(TILES.DUNGEON, 'assets/map_att/tiles-dungeon.png');
+    this.load.tilemapTiledJSON(TILEMAP_KEYS.DUNGEON, 'assets/map_att/dungeon.json');
 
     loadHordaSprites(this);
+
+    this.load.spritesheet(SPRITES.PORTAL.BASE, 'assets/portal/portal.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
     console.log("scena nova");
   }
 
   create() {
 
+    console.log('create')
+    // const map = this.make.tilemap({ key: TILEMAP_KEYS.DUNGEON })
+    // const tilesetDungeon = map.addTilesetImage(dungeon.tilesets[0].name, TILES.DUNGEON, SIZES.TILE, SIZES.TILE)
 
-    // Mapa
-    const map = this.make.tilemap({ key: "map" });
-    const tileset = map.addTilesetImage(hookJson.tilesets[0].name, TILES.HOOK, SIZES.TILE, SIZES.TILE);
+    // const backgroundLayer = map.createLayer('background', tilesetDungeon!, 0, 0)
+    // const wayLayer = map.createLayer('way', tilesetDungeon!, 0, 0)
+    // const lavaLayer = map.createLayer('lava', tilesetDungeon!, 0, 0)
 
-    const groundLayer = map.createLayer(LAYERS.GROUND, tileset, 0, 0);
-    const shopLayer = map.createLayer(LAYERS.SHOP, tileset, 0, 0);
-    const waterLayer = map.createLayer(LAYERS.WATER, tileset, 0, 0);
+    const map = this.make.tilemap({ key: TILEMAP_KEYS.DUNGEON });
+    const tileset = map.addTilesetImage(dungeon.tilesets[0].name, TILES.DUNGEON, SIZES.TILE, SIZES.TILE);
+
+    const backgroundLayer = map.createLayer(LAYERS.DUNGEONMAP.BACKGROUND, tileset!, 0, 0);
+    const wayLayer = map.createLayer(LAYERS.DUNGEONMAP.WAY, tileset!, 0, 0);
+    const lavaLayer = map.createLayer(LAYERS.DUNGEONMAP.LAVA, tileset!, 0, 0);
+
 
     // Verificar se as camadas foram carregadas corretamente
-    if (!groundLayer || !shopLayer || !waterLayer) {
+    if (!backgroundLayer || !lavaLayer || !wayLayer) {
       console.error('Erro ao carregar as camadas do mapa');
     }
 
-    this.heroHorda = new HeroHorda({ scene: this, x: 200, y: 400, textures: { base: SPRITES.HORDA.BASE } });
+    this.heroHorda = new HeroHorda({ scene: this, x: 200, y: 200, textures: { base: SPRITES.HORDA.BASE } });
 
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    //  this.heroAlianca.setCollideWorldBounds(true);
+    
     this.heroHorda.setCollideWorldBounds(true);
+    backgroundLayer.setCollisionByExclusion([-1]);
+    
+    this.physics.add.collider(this.heroHorda, backgroundLayer);
 
-    //  this.physics.add.collider(this.heroAlianca, waterLayer, this.heroAlianca.handleWaterCollision.bind(this.heroAlianca), undefined, this);
-    this.physics.add.collider(this.heroHorda, waterLayer);
-
-    waterLayer.setCollisionByExclusion([-1]);
 
     const portal = new Portal({ scene: this, x: 125, y: 575, textures: { base: SPRITES.PORTAL.BASE } })
     this.physics.add.collider(this.heroHorda, portal, () => {

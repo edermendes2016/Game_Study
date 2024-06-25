@@ -20,7 +20,7 @@ export class MenuScene extends Phaser.Scene {
 
     const demoButton = this.add.text(400, 250, 'Demo', { fontSize: '132px' })
       .setInteractive()
-      .on('pointerdown', () => this.scene.start('DemoScene'));
+      .on('pointerdown', () => this.scene.start('TesteScene'));
 
     // const menuButton = this.add.text(400, 250, 'Menu', { fontSize: '132px' })
     //   .setInteractive()

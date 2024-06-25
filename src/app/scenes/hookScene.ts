@@ -53,9 +53,9 @@ export class HookScene extends Phaser.Scene {
         const map = this.make.tilemap({ key: "map" });
         const tileset = map.addTilesetImage(hookJson.tilesets[0].name, TILES.HOOK, SIZES.TILE, SIZES.TILE);
 
-        const groundLayer = map.createLayer(LAYERS.GROUND, tileset, 0, 0);
-        const shopLayer = map.createLayer(LAYERS.SHOP, tileset, 0, 0);
-        const waterLayer = map.createLayer(LAYERS.WATER, tileset, 0, 0);
+        const groundLayer = map.createLayer(LAYERS.HOOKMAP.GROUND, tileset, 0, 0);
+        const shopLayer = map.createLayer(LAYERS.HOOKMAP.SHOP, tileset, 0, 0);
+        const waterLayer = map.createLayer(LAYERS.HOOKMAP.WATER, tileset, 0, 0);
 
        // this.heroAlianca = new HeroAlianca(this, 100, 50, SPRITES.ALIANCA);
         this.heroHorda = new HeroHorda({scene: this, x:200, y:400, textures: { base: SPRITES.HORDA.BASE }});
