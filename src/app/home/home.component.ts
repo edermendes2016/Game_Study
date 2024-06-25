@@ -6,6 +6,7 @@ import { MenuScene } from '../menu-scene';
 import { HookScene } from '../scenes/hookScene';
 
 import { TesteScene } from './gameTeste';
+import { GameScene } from '../scenes/gameScene';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         autoCenter: Phaser.Scale.CENTER_BOTH
       },
       physics: { default: "arcade", arcade: { debug: true } },
-      scene: [MenuScene, HookScene, TesteScene],      
+      scene: [GameScene, HookScene, TesteScene],      
       pixelArt: true
     }
   }

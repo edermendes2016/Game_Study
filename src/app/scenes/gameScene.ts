@@ -18,32 +18,18 @@ export class GameScene extends Phaser.Scene {
     this.load.image(TILES.DUNGEON, 'assets/map_att/tiles-dungeon.png');
     this.load.tilemapTiledJSON(TILEMAP_KEYS.DUNGEON, 'assets/map_att/dungeon.json');
 
-    loadHordaSprites(this);
-
-    this.load.spritesheet(SPRITES.PORTAL.BASE, 'assets/portal/portal.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    });
+    loadHordaSprites(this);    
     console.log("scena nova");
   }
 
   create() {
-
-    console.log('create')
-    // const map = this.make.tilemap({ key: TILEMAP_KEYS.DUNGEON })
-    // const tilesetDungeon = map.addTilesetImage(dungeon.tilesets[0].name, TILES.DUNGEON, SIZES.TILE, SIZES.TILE)
-
-    // const backgroundLayer = map.createLayer('background', tilesetDungeon!, 0, 0)
-    // const wayLayer = map.createLayer('way', tilesetDungeon!, 0, 0)
-    // const lavaLayer = map.createLayer('lava', tilesetDungeon!, 0, 0)
-
+    console.log('create mapa') 
     const map = this.make.tilemap({ key: TILEMAP_KEYS.DUNGEON });
     const tileset = map.addTilesetImage(dungeon.tilesets[0].name, TILES.DUNGEON, SIZES.TILE, SIZES.TILE);
 
     const backgroundLayer = map.createLayer(LAYERS.DUNGEONMAP.BACKGROUND, tileset!, 0, 0);
     const wayLayer = map.createLayer(LAYERS.DUNGEONMAP.WAY, tileset!, 0, 0);
     const lavaLayer = map.createLayer(LAYERS.DUNGEONMAP.LAVA, tileset!, 0, 0);
-
 
     // Verificar se as camadas foram carregadas corretamente
     if (!backgroundLayer || !lavaLayer || !wayLayer) {
@@ -60,12 +46,12 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.heroHorda, backgroundLayer);
 
 
-    const portal = new Portal({ scene: this, x: 125, y: 575, textures: { base: SPRITES.PORTAL.BASE } })
-    this.physics.add.collider(this.heroHorda, portal, () => {
-      this.scene.stop();
-      this.scene.remove('GameScene');      
-      this.scene.start('HookScene');
-    });
+    // const portal = new Portal({ scene: this, x: 125, y: 575, textures: { base: SPRITES.PORTAL.BASE } })
+    // this.physics.add.collider(this.heroHorda, portal, () => {
+    //   this.scene.stop();
+    //   this.scene.remove('GameScene');      
+    //   this.scene.start('HookScene');
+    // });
 
   }
 
