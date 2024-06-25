@@ -12,14 +12,10 @@ export class Enemy01 extends SetBaseHook {
             throw new Error('textures.base is required');
         }
 
-        super({ scene, x, y, textures, type: SPRITES.BOAR.TYPE });   
+        super({ scene, x, y, textures, type: SPRITES.BOAR.TYPE }); 
         
-        
-
         this.cycleTween();
-        this.setFlipX(true);
-
-        
+        this.setFlipX(true);        
     }
 
     cycleTween(){

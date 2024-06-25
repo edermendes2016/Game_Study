@@ -36,7 +36,7 @@ export class HookScene extends Phaser.Scene {
         this.load.audio('waterSplash', ['assets/sounds/splash.mp3']);
         loadHookSprites(this);  
 
-      //  loadAliancaSprites(this);
+        loadAliancaSprites(this);
         loadHordaSprites(this);
 
         loadEmemy01Sprites(this);
