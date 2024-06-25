@@ -6,7 +6,24 @@
          "draworder":"topdown",
          "id":4,
          "name":"GameObjects",
-         "objects":[],
+         "objects":[
+                {
+                 "height":32,
+                 "id":6,
+                 "name":"ExitCove",
+                 "properties":[
+                        {
+                         "name":"TypeExitCove",
+                         "type":"string",
+                         "value":"YesLeave"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":41,
+                 "x":14293.67,
+                 "y":2123.00333333333
+                }],
          "opacity":1,
          "parallaxx":64,
          "parallaxy":64,
@@ -112,7 +129,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":6,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
