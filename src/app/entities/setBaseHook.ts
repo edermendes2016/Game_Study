@@ -11,6 +11,7 @@ export class SetBaseHook extends Entity {
     dashCooldown: number;
     lastDashTime: number;
     attackEvent: Phaser.Time.TimerEvent;
+    cycleTween?: Phaser.Tweens.Tween;
     
 
     constructor({ scene, x, y, textures }: IEntity) {
@@ -39,7 +40,7 @@ export class SetBaseHook extends Entity {
     }
 
     bePulled(targetX: number, targetY: number, duration: number) {
-        this.play('pulled', true);
+       // this.play('pulled', true); se houver uma animação colocar aqui
         this.scene.physics.moveToObject(this, { x: targetX, y: targetY }, 300);
 
         this.scene.time.delayedCall(duration, () => {
@@ -47,11 +48,7 @@ export class SetBaseHook extends Entity {
                 const body = this.body as Phaser.Physics.Arcade.Body; // Type assertion
                 body.setVelocity(0, 0); // Parar o movimento após a duração
                 this.setVisible(false); // Tornar o personagem invisível ao ser puxado para dentro do rio
-                this.scene.time.delayedCall(2000, () => {
-                    if (this.scene) { // Verifique se o objeto ainda existe
-                        this.respawn();
-                    }
-                });
+                
                 this.destroy(); // Destruir o personagem
             }
         });
@@ -65,13 +62,7 @@ export class SetBaseHook extends Entity {
             this.scene.sound.play('waterSplash');
         } else {
             console.error('O áudio "waterSplash" não foi carregado.');
-        }
-
-        this.scene.time.delayedCall(2000, () => {
-            if (this.scene) { // Verifique se o objeto ainda existe
-                this.respawn();
-            }
-        });
+        }       
 
         this.destroy();
     }
@@ -123,5 +114,28 @@ export class SetBaseHook extends Entity {
         this.scene.physics.add.existing(newCharacter);
         newCharacter.setPosition(this.initialX, this.initialY);
         newCharacter.setVisible(true);
+    }
+
+    createCycleTween() {
+        return this.scene.tweens.add({
+            targets: this,
+            duration: 2000,
+            repeat: -1,
+            yoyo: true,
+            x: this.x + 100,
+            onRepeat: () => {
+                this.setFlipX(true);
+            },
+            onYoyo: () => {
+                this.setFlipX(false);
+            }
+        });
+    } 
+
+    stopCycleTween() {
+        if (this.cycleTween) {
+            this.cycleTween.stop();
+            this.cycleTween = undefined;
+        }
     }
 }

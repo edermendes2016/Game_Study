@@ -27,9 +27,9 @@ export const SPRITES = {
 export const LAYERS = {
     HOOKMAP: {
         GROUND: 'ground',
-        WALLS: 'walls',
+     //   WALLS: 'walls',
         WATER: 'water',        
-        SHOP: 'shop'
+     //   SHOP: 'shop'
     },
     DUNGEONMAP: {
         LAVA: "lava",

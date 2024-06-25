@@ -3,36 +3,6 @@
  "infinite":false,
  "layers":[
         {
-         "draworder":"topdown",
-         "id":4,
-         "name":"GameObjects",
-         "objects":[
-                {
-                 "height":32,
-                 "id":6,
-                 "name":"ExitCove",
-                 "properties":[
-                        {
-                         "name":"TypeExitCove",
-                         "type":"string",
-                         "value":"YesLeave"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":41,
-                 "x":14293.67,
-                 "y":2123.00333333333
-                }],
-         "opacity":1,
-         "parallaxx":64,
-         "parallaxy":64,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "data":[188, 188, 188, 188, 188, 268, 0, 0, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188, 188,
             188, 188, 188, 188, 188, 0, 0, 0, 0, 188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 188, 188, 188, 188, 188, 188,
             188, 188, 188, 188, 188, 0, 0, 0, 0, 188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 188, 188, 188, 188, 188, 188,
@@ -55,7 +25,6 @@
             188, 188, 188, 188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 188, 188, 188, 188, 188, 188, 188],
          "height":20,
          "id":1,
-         "locked":true,
          "name":"background",
          "opacity":1,
          "type":"tilelayer",
@@ -87,12 +56,39 @@
             0, 0, 0, 0, 147, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 149, 0, 0, 0, 0, 0, 0, 0],
          "height":20,
          "id":2,
-         "locked":true,
          "name":"way",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
          "width":30,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":6,
+         "name":"Objects",
+         "objects":[
+                {
+                 "height":12,
+                 "id":8,
+                 "name":"Exit",
+                 "properties":[
+                        {
+                         "name":"ExitLeave",
+                         "type":"string",
+                         "value":"yes"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":42.5,
+                 "x":217,
+                 "y":10
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -119,7 +115,6 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 336, 337, 338, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":20,
          "id":3,
-         "locked":true,
          "name":"lava",
          "opacity":1,
          "type":"tilelayer",
@@ -128,8 +123,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":7,
+ "nextlayerid":7,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

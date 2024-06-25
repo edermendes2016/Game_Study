@@ -14,27 +14,18 @@ export class Enemy01 extends SetBaseHook {
 
         super({ scene, x, y, textures, type: SPRITES.BOAR.TYPE }); 
         
-        this.cycleTween();
-        this.setFlipX(true);        
+        this.createCycleTween();
+        this.setFlipX(true); 
+        
+        //x horizontal, y vertical
+        this.setSize(16, -6);
+        this.setOffset(10, 16);
+        this.setScale(1);
     }
 
-    cycleTween(){
-        this.scene.tweens.add({
-            targets: this,
-            duration: 2000,
-            repeat: -1,
-            yoyo: true,
-            x: this.x + 100,
-            // Fazer o inimigo virar quando estiver voltando
-            onRepeat: () => {
-                this.setFlipX(true);
-            },
-            // precisa criar a função de Yoyo
-            onYoyo: () => {
-                this.setFlipX(false);
-            }
-        });
-    }    
+    
+
+       
 }
 
 export const loadEmemy01Sprites = (scene: Phaser.Scene): void => { 

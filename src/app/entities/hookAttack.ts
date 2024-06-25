@@ -7,23 +7,26 @@ interface HookScene extends Phaser.Scene {
     canHordaMove: boolean;
 }
 
-export class HookAttack {
+export class HookAttack  {
     scene: HookScene;
     hook!: Phaser.Physics.Arcade.Sprite;
     rope!: Phaser.GameObjects.Sprite;
     isHookActive: boolean;
     heroHorda: HeroHorda;
     enemies: Phaser.Physics.Arcade.Group;
+    
 
     constructor(scene: HookScene, heroHorda: HeroHorda, enemies: Phaser.Physics.Arcade.Group) {
         this.scene = scene;
         this.heroHorda = heroHorda;
         this.enemies = enemies;
         this.isHookActive = false;
+               
     }
 
     fire() {
         if (this.isHookActive) return;
+        
 
         this.isHookActive = true;
         this.scene.canHeroMove = false; // Impedir que o herói se mova durante o ataque
@@ -45,6 +48,10 @@ export class HookAttack {
 
         // Criar o sprite do gancho
         this.hook = this.scene.physics.add.sprite(hookStartX, hookStartY, 'att_hook').setScale(0.7);
+
+         // Diminuir o hitbox do gancho
+        this.hook.body.setSize(16, 16); // Ajuste o tamanho da hitbox conforme necessário
+        this.hook.body.setOffset(8, 8); // Ajuste a posição da hitbox conforme necessário
 
         // Verificar se a animação existe antes de reproduzir
         if (this.hook.anims) {
@@ -81,13 +88,15 @@ export class HookAttack {
         if (enemy instanceof SetBaseHook) {
             const riverY = this.heroHorda.y; // Ajuste conforme necessário para posicionar o herói no rio
 
+            enemy.stopCycleTween(); // Parar a animação de ciclo do inimigo
+
             enemy.bePulled(this.heroHorda.x, riverY, 1000); // Puxar o inimigo em direção ao herói Horda e para dentro do rio
 
             this.retractHook(); // Iniciar a animação de retorno do gancho
         }
     }
 
-    retractHook() {
+    retractHook() {        
         // Tween para retornar a corda à posição inicial
         this.scene.tweens.add({
             targets: this.rope,
